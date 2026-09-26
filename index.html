@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pratham Gupta — Websites for growing businesses</title>
+<meta name="description" content="I build websites for small and growing businesses. Fast turnaround, full transparency, full ownership.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0E0A1A;
+    --purple: #A374FF;
+    --purple-bright: #C4A3FF;
+    --purple-dim: #6B5B9A;
+    --white: #F4F1FB;
+    --box: rgba(163, 116, 255, 0.04);
+    --box-line: rgba(163, 116, 255, 0.22);
+    --box-line-soft: rgba(163, 116, 255, 0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--white);
+    font-family: 'Space Grotesk', sans-serif; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  #ripple { position: fixed; inset: 0; z-index: 0; display: block; }
+  .content { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 24px; }
+  header { padding: 110px 0 70px; }
+  .tag {
+    display: inline-block; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--purple); border: 1px solid var(--box-line); padding: 6px 12px; margin-bottom: 28px;
+  }
+  h1 { font-size: clamp(34px, 6vw, 60px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 22px; }
+  h1 .p { color: var(--purple); }
+  .lede { font-size: 18px; color: rgba(244, 241, 251, 0.7); max-width: 48ch; }
+  section { padding: 40px 0; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--purple-dim); margin-bottom: 10px; }
+  h2 { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 30px; }
+  .cap-box { border: 1px solid var(--box-line); background: var(--box); padding: 32px; }
+  .cap-lead { font-size: 17px; color: rgba(244, 241, 251, 0.85); margin-bottom: 26px; }
+  .cap-lead strong { color: var(--purple-bright); font-weight: 600; }
+  .stack-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    border-top: 1px solid var(--box-line-soft); border-left: 1px solid var(--box-line-soft);
+  }
+  .stack-cell { border-right: 1px solid var(--box-line-soft); border-bottom: 1px solid var(--box-line-soft); padding: 14px 16px; font-size: 14px; }
+  .stack-cell span { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple-dim); margin-bottom: 4px; }
+  .work { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .card {
+    border: 1px solid var(--box-line-soft); background: var(--box); text-decoration: none;
+    color: var(--white); display: flex; flex-direction: column;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    transform-origin: center;
+  }
+  .card:hover {
+    border-color: var(--purple);
+    transform: translateY(-6px) scale(1.035);
+    box-shadow: 0 18px 40px rgba(163, 116, 255, 0.18);
+    z-index: 2;
+  }
+  .shot img { transition: transform 0.4s ease; }
+  .card:hover .shot img { transform: scale(1.06); }
+  .card:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
+  .shot {
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, rgba(163,116,255,0.14), rgba(163,116,255,0.03));
+    border-bottom: 1px solid var(--box-line-soft);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shot .ph { font-size: 12px; color: var(--purple-dim); letter-spacing: 0.05em; }
+  .card-body { padding: 16px 18px 20px; }
+  .card-name { font-size: 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .card-name .arr { color: var(--purple); opacity: 0; transition: opacity 0.2s ease; }
+  .card:hover .card-name .arr { opacity: 1; }
+  .card-cat { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple-dim); margin: 4px 0 10px; }
+  .card-blurb { font-size: 13.5px; color: rgba(244, 241, 251, 0.62); line-height: 1.5; }
+  .offer { display: grid; gap: 0; border: 1px solid var(--box-line); }
+  .offer-row { padding: 22px 26px; border-bottom: 1px solid var(--box-line-soft); display: flex; gap: 18px; align-items: flex-start; }
+  .offer-row:last-child { border-bottom: none; }
+  .offer-num { color: var(--purple); font-weight: 700; font-size: 15px; flex-shrink: 0; }
+  .offer-row h3 { font-size: 16px; font-weight: 600; margin-bottom: 3px; }
+  .offer-row p { font-size: 14px; color: rgba(244, 241, 251, 0.62); }
+  .contact-box { border: 1px solid var(--box-line); background: var(--box); padding: 32px; }
+  .contact-box a { color: var(--purple-bright); text-decoration: none; border-bottom: 1px solid var(--box-line); transition: border-color 0.2s ease; }
+  .contact-box a:hover { border-color: var(--purple-bright); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 22px; }
+  .contact-grid .label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple-dim); margin-bottom: 6px; }
+  .contact-grid p { font-size: 14.5px; }
+  footer { padding: 50px 0 90px; text-align: center; color: var(--purple-dim); font-size: 13px; }
+  @media (max-width: 620px) {
+    .work { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    header { padding: 80px 0 50px; }
+    .cap-box, .contact-box { padding: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<canvas id="ripple"></canvas>
+<div class="content">
+  <header>
+    <span class="tag">Web development</span>
+    <h1>Hi, I'm <span class="p">Pratham</span>. I build websites for growing businesses.</h1>
+    <p class="lede">From a first Shopify store to a full custom rebuild, backed by real, hands-on experience across the stack. If your business lives on social media right now, I'll get it a proper home online.</p>
+  </header>
+
+  <section>
+    <p class="eyebrow">What's behind me</p>
+    <h2>The capability</h2>
+    <div class="cap-box">
+      <p class="cap-lead">I'm the person you talk to, but there's <strong>real, hands-on experience</strong> behind every build, across e-commerce, custom platforms and everything in between. Whatever your business actually needs, the resources to build it are already here.</p>
+      <div class="stack-grid">
+        <div class="stack-cell"><span>E-commerce</span>Shopify</div>
+        <div class="stack-cell"><span>Custom stores</span>Medusa.js</div>
+        <div class="stack-cell"><span>CMS</span>WordPress / WooCommerce</div>
+        <div class="stack-cell"><span>Frontend</span>React / Next.js</div>
+        <div class="stack-cell"><span>Backend</span>Node.js / PHP</div>
+        <div class="stack-cell"><span>Styling</span>Tailwind CSS</div>
+        <div class="stack-cell"><span>Search</span>SEO &amp; Google Business</div>
+        <div class="stack-cell"><span>Integrations</span>Payments / Booking</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Selected work</p>
+    <h2>Live sites, real businesses</h2>
+    <div class="work">
+      <a class="card" href="https://ecigone.co.uk" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/ecigone.png" alt="ecigone.co.uk" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">ecigone.co.uk <span class="arr">&#8599;</span></div><div class="card-cat">E-commerce &middot; Vape retail</div><p class="card-blurb">If you're after vape gear, genuinely worth a look, one of the widest ranges I've seen done properly.</p></div>
+      </a>
+      <a class="card" href="https://gldn.com" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/gldn.png" alt="gldn.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">gldn.com <span class="arr">&#8599;</span></div><div class="card-cat">E-commerce &middot; Jewellery</div><p class="card-blurb">Beautiful, understated jewellery, the kind of pieces that don't need to shout to stand out.</p></div>
+      </a>
+      <a class="card" href="https://lexxola.com" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/lexxola.png" alt="lexxola.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">lexxola.com <span class="arr">&#8599;</span></div><div class="card-cat">E-commerce &middot; Eyewear</div><p class="card-blurb">Sharp, distinctive eyewear if you want something with real personality on your face.</p></div>
+      </a>
+      <a class="card" href="https://katiemakinjewellery.com" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/katiemakin.png" alt="katiemakinjewellery.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">katiemakinjewellery.com <span class="arr">&#8599;</span></div><div class="card-cat">E-commerce &middot; Handmade jewellery</div><p class="card-blurb">Proper handmade pieces, you can tell real care goes into each one.</p></div>
+      </a>
+      <a class="card" href="https://anabeldesign.co.uk" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/anabel.png" alt="anabeldesign.co.uk" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">anabeldesign.co.uk <span class="arr">&#8599;</span></div><div class="card-cat">Curtains &amp; soft furnishings</div><p class="card-blurb">If you need curtains or blinds done properly, these are the people I'd actually recommend.</p></div>
+      </a>
+      <a class="card" href="https://travelwithshay.com" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/travelwithshay.png" alt="travelwithshay.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">travelwithshay.com <span class="arr">&#8599;</span></div><div class="card-cat">Independent travel agent</div><p class="card-blurb">If you're planning a trip and want it sorted by an actual person, not a chatbot, start here.</p></div>
+      </a>
+      <a class="card" href="https://nobile.in" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/nobile.png" alt="nobile.in" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">nobile.in <span class="arr">&#8599;</span></div><div class="card-cat">Kitchens &amp; home decor</div><p class="card-blurb">Genuinely lovely kitchen and home decor pieces, worth a browse even just for inspiration.</p></div>
+      </a>
+      <a class="card" href="https://4seasontravels.com" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/4season.png" alt="4seasontravels.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">4seasontravels.com <span class="arr">&#8599;</span></div><div class="card-cat">Travel agency</div><p class="card-blurb">A solid pick if you want a proper travel agency handling the details for you.</p></div>
+      </a>
+      <a class="card" href="https://heavenhues.in" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/heavenhues.png" alt="heavenhues.in" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">heavenhues.in <span class="arr">&#8599;</span></div><div class="card-cat">Scented candles</div><p class="card-blurb">Their candles smell as good as the site looks, which is saying something.</p></div>
+      </a>
+      <a class="card" href="https://danielsimmons.co" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/danielsimmons.png" alt="danielsimmons.co" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">danielsimmons.co <span class="arr">&#8599;</span></div><div class="card-cat">Premium menswear</div><p class="card-blurb">Quietly one of the better menswear brands I've come across, worth a look.</p></div>
+      </a>
+      <a class="card" href="https://azatmardofficial.com" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/azatmard.png" alt="azatmardofficial.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">azatmardofficial.com <span class="arr">&#8599;</span></div><div class="card-cat">Premium fashion</div><p class="card-blurb">Real craftsmanship behind this one, a brand worth keeping an eye on.</p></div>
+      </a>
+      <a class="card" href="https://zibaa.in" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/zibaa.png" alt="zibaa.in" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">zibaa.in <span class="arr">&#8599;</span></div><div class="card-cat">Fashion &middot; Ethnic wear</div><p class="card-blurb">Genuinely striking ethnic wear, colours done properly, not washed out.</p></div>
+      </a>
+      <a class="card" href="https://general-pharmaceuticals.com" target="_blank" rel="noopener">
+        <div class="shot"><img src="images/general-pharma.png" alt="general-pharmaceuticals.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
+        <div class="card-body"><div class="card-name">general-pharmaceuticals.com <span class="arr">&#8599;</span></div><div class="card-cat">Pharmaceuticals</div><p class="card-blurb">A properly run pharmaceutical supplier, exactly what you want in that space, no-nonsense and reliable.</p></div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Working together</p>
+    <h2>What you get</h2>
+    <div class="offer">
+      <div class="offer-row"><span class="offer-num">01</span><div><h3>Fast turnaround</h3><p>Most sites go live in around a week once we've agreed on what you want, no dragging it out over months.</p></div></div>
+      <div class="offer-row"><span class="offer-num">02</span><div><h3>Full transparency</h3><p>A clear price agreed upfront, no hidden extras added later, and you always know exactly where the build is.</p></div></div>
+      <div class="offer-row"><span class="offer-num">03</span><div><h3>Full ownership</h3><p>The finished site is yours, domain, hosting and all, with nothing locked behind me.</p></div></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Get in touch</p>
+    <h2>Let's talk about your site</h2>
+    <div class="contact-box">
+      <p>The easiest way to start is a quick message, tell me a bit about your business and what you're after.</p>
+      <div class="contact-grid">
+        <div><div class="label">Email</div><p><a href="mailto:pratham@aviangrove.com">pratham@aviangrove.com</a></p></div>
+        <div><div class="label">When you can reach me</div><p>Monday to Saturday, replies usually the same day.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Pratham Gupta &middot; aviangrove.com</footer>
+</div>
+
+<script>
+(function () {
+  var canvas = document.getElementById('ripple');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ctx = canvas.getContext('2d');
+  var w, h, dpr;
+  var ripples = [];
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.width = innerWidth * dpr;
+    h = canvas.height = innerHeight * dpr;
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+  }
+  resize();
+  addEventListener('resize', resize);
+  var blobs = [];
+  for (var i = 0; i < 5; i++) {
+    blobs.push({ x: Math.random(), y: Math.random(), vx: (Math.random() - 0.5) * 0.0004, vy: (Math.random() - 0.5) * 0.0004, r: 0.35 + Math.random() * 0.3 });
+  }
+  var lastSpawn = 0;
+  function addRipple(x, y) {
+    ripples.push({ x: x * dpr, y: y * dpr, r: 0, max: (120 + Math.random() * 80) * dpr, a: 0.5 });
+    if (ripples.length > 24) ripples.shift();
+  }
+  if (!reduce) {
+    addEventListener('pointermove', function (e) {
+      var now = performance.now();
+      if (now - lastSpawn > 45) { addRipple(e.clientX, e.clientY); lastSpawn = now; }
+    });
+    addEventListener('pointerdown', function (e) { addRipple(e.clientX, e.clientY); });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#0E0A1A';
+    ctx.fillRect(0, 0, w, h);
+    for (var i = 0; i < blobs.length; i++) {
+      var b = blobs[i];
+      b.x += b.vx; b.y += b.vy;
+      if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
+      if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
+      var g = ctx.createRadialGradient(b.x * w, b.y * h, 0, b.x * w, b.y * h, b.r * w);
+      g.addColorStop(0, 'rgba(120, 80, 200, 0.16)');
+      g.addColorStop(1, 'rgba(120, 80, 200, 0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+    }
+    for (var j = ripples.length - 1; j >= 0; j--) {
+      var rp = ripples[j];
+      rp.r += 2.2 * dpr; rp.a *= 0.955;
+      if (rp.a < 0.01 || rp.r > rp.max) { ripples.splice(j, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(163, 116, 255, ' + rp.a + ')';
+      ctx.lineWidth = 1.4 * dpr;
+      ctx.stroke();
+    }
+    requestAnimationFrame(draw);
+  }
+  if (reduce) {
+    ctx.fillStyle = '#0E0A1A'; ctx.fillRect(0, 0, w, h);
+    for (var k = 0; k < blobs.length; k++) {
+      var bb = blobs[k];
+      var gg = ctx.createRadialGradient(bb.x * w, bb.y * h, 0, bb.x * w, bb.y * h, bb.r * w);
+      gg.addColorStop(0, 'rgba(120, 80, 200, 0.14)');
+      gg.addColorStop(1, 'rgba(120, 80, 200, 0)');
+      ctx.fillStyle = gg; ctx.fillRect(0, 0, w, h);
+    }
+  } else { draw(); }
+})();
+</script>
+</body>
+</html>
