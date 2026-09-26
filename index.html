@@ -27,7 +27,7 @@
     -webkit-font-smoothing: antialiased; overflow-x: hidden;
   }
   #ripple { position: fixed; inset: 0; z-index: 0; display: block; }
-  .content { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 24px; }
+  .content { position: relative; z-index: 1; width: 100%; max-width: 780px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 24px); }
   header { padding: 110px 0 70px; }
   .tag {
     display: inline-block; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
@@ -48,7 +48,7 @@
   }
   .stack-cell { border-right: 1px solid var(--box-line-soft); border-bottom: 1px solid var(--box-line-soft); padding: 14px 16px; font-size: 14px; }
   .stack-cell span { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple-dim); margin-bottom: 4px; }
-  .work { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .work { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
   .card {
     border: 1px solid var(--box-line-soft); background: var(--box); text-decoration: none;
     color: var(--white); display: flex; flex-direction: column;
@@ -91,11 +91,24 @@
   .contact-grid .label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple-dim); margin-bottom: 6px; }
   .contact-grid p { font-size: 14.5px; }
   footer { padding: 50px 0 90px; text-align: center; color: var(--purple-dim); font-size: 13px; }
+  footer a { color: var(--purple-dim); text-decoration: none; border-bottom: 1px solid rgba(163, 116, 255, 0.2); transition: color 0.2s ease, border-color 0.2s ease; }
+  footer a:hover { color: var(--purple-bright); border-color: var(--purple-bright); }
+  @media (max-width: 900px) {
+    .stack-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  }
+
   @media (max-width: 620px) {
-    .work { grid-template-columns: 1fr; }
     .contact-grid { grid-template-columns: 1fr; }
-    header { padding: 80px 0 50px; }
-    .cap-box, .contact-box { padding: 24px; }
+    header { padding: 64px 0 40px; }
+    section { padding: 32px 0; }
+    .cap-box, .contact-box { padding: 20px; }
+    h2 { font-size: 22px; }
+    .lede { font-size: 16px; }
+  }
+
+  @media (max-width: 400px) {
+    .tag { font-size: 11px; padding: 5px 10px; }
+    .card-body { padding: 14px 16px 18px; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
@@ -113,7 +126,7 @@
     <p class="eyebrow">What's behind me</p>
     <h2>The capability</h2>
     <div class="cap-box">
-      <p class="cap-lead">I'm the person you talk to, but there's <strong>real, hands-on experience</strong> behind every build, across e-commerce, custom platforms and everything in between. Whatever your business actually needs, the resources to build it are already here.</p>
+      <p class="cap-lead">I'm the person you talk to, working as part of <strong>AvianGrove</strong>, so there's real, hands-on experience behind every build, across e-commerce, custom platforms and everything in between. Whatever your business actually needs, the resources to build it are already here.</p>
       <div class="stack-grid">
         <div class="stack-cell"><span>E-commerce</span>Shopify</div>
         <div class="stack-cell"><span>Custom stores</span>Medusa.js</div>
@@ -208,7 +221,7 @@
     </div>
   </section>
 
-  <footer>Pratham Gupta &middot; aviangrove.com</footer>
+  <footer>Pratham Gupta &middot; <a href="https://aviangrove.com" target="_blank" rel="noopener">aviangrove.com</a></footer>
 </div>
 
 <script>
