@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) document.documentElement.classList.add('intro', 'intro-lock');
+  })();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pratham Gupta — Websites for growing businesses</title>
-<meta name="description" content="I build websites for small and growing businesses . Fast turnaround, full transparency, full ownership.">
+<meta name="description" content="I build websites for small and growing businesses. Fast turnaround, full transparency, full ownership.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -112,22 +118,141 @@
     .card-body { padding: 14px 16px 18px; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  /* ---------- Bunker gate intro ---------- */
+  .gate { display: none; }
+  html.intro-lock, html.intro-lock body { overflow: hidden; height: 100%; }
+  html.intro-lock .gate, html.intro .gate { display: block; }
+
+  .gate { position: fixed; inset: 0; z-index: 9999; cursor: pointer; }
+
+  .door {
+    position: absolute; top: 0; bottom: 0; width: 50%;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,0.035), transparent 35%),
+      repeating-linear-gradient(0deg, transparent 0 118px, rgba(0,0,0,0.5) 118px 122px, rgba(163,116,255,0.10) 122px 124px),
+      linear-gradient(180deg, #1B1233, #0B0716);
+    transition: transform 1.5s cubic-bezier(0.77, 0, 0.18, 1);
+    will-change: transform;
+  }
+  .door.left { left: 0; }
+  .door.right { right: 0; }
+
+  /* heavy inner edge with a faint purple glow along the seam */
+  .door::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 22px;
+    background: linear-gradient(90deg, #08050F, #1E1538 45%, #08050F);
+    box-shadow: 0 0 28px rgba(163, 116, 255, 0.18);
+  }
+  .door.left::after { right: 0; border-right: 1px solid rgba(163, 116, 255, 0.35); }
+  .door.right::after { left: 0; border-left: 1px solid rgba(163, 116, 255, 0.35); }
+
+  /* rivets running down each door's inner edge */
+  .door::before {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 14px; z-index: 1;
+    background: radial-gradient(circle at 50% 50%, rgba(196,163,255,0.55) 0 2.5px, rgba(0,0,0,0.65) 3px 4.5px, transparent 5.5px);
+    background-size: 14px 60px;
+  }
+  .door.left::before { right: 38px; }
+  .door.right::before { left: 38px; }
+
+  .gate.open .door.left { transform: translateX(-101%); }
+  .gate.open .door.right { transform: translateX(101%); }
+
+  .wheel-wrap {
+    position: absolute; top: 50%; left: 50%;
+    width: clamp(190px, 38vw, 300px);
+    transform: translate(-50%, -50%);
+    text-align: center; z-index: 2;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    animation: gateFade 0.9s ease;
+  }
+  .gate.open .wheel-wrap {
+    opacity: 0; transform: translate(-50%, -50%) scale(1.12);
+    animation: none; pointer-events: none;
+  }
+  @keyframes gateFade { from { opacity: 0; } to { opacity: 1; } }
+
+  .wheel-wrap svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .w-track { fill: none; stroke: rgba(163,116,255,0.16); stroke-width: 5; }
+  .w-progress { fill: none; stroke: #A374FF; stroke-width: 5; stroke-linecap: round;
+    transform: rotate(-90deg); transform-origin: 100px 100px; transition: stroke 0.3s ease; }
+  .w-wheel { transform-origin: 100px 100px; }
+  .w-wheel .rim { fill: none; stroke: #6B5B9A; stroke-width: 5; transition: stroke 0.3s ease; }
+  .w-wheel .spoke { stroke: #6B5B9A; stroke-width: 5; stroke-linecap: round; transition: stroke 0.3s ease; }
+  .w-wheel .knob { fill: #0E0A1A; stroke: #8F7ACB; stroke-width: 3; transition: stroke 0.3s ease; }
+  .w-wheel .hub { fill: #0E0A1A; stroke: #A374FF; stroke-width: 4; }
+  .bolt { fill: #6B5B9A; transition: transform 0.45s cubic-bezier(0.5, 0, 0.2, 1), fill 0.3s ease, opacity 0.45s ease; }
+
+  .gate.unlocked .w-progress { stroke: #C4A3FF; }
+  .gate.unlocked .w-wheel .rim,
+  .gate.unlocked .w-wheel .spoke { stroke: #C4A3FF; }
+  .gate.unlocked .w-wheel .knob { stroke: #C4A3FF; }
+  .gate.unlocked .bolt { fill: #C4A3FF; opacity: 0; transform: translateY(-12px); }
+  .gate.unlocked .wheel-clunk { animation: clunk 0.35s ease; }
+  @keyframes clunk { 0% { transform: scale(1); } 40% { transform: scale(1.045); } 100% { transform: scale(1); } }
+
+  .gate-status {
+    margin-top: 18px; font-size: 13px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #8B7FB3;
+  }
+  .gate-status b { color: var(--white); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .gate.unlocked .gate-status { color: var(--purple-bright); }
+  .gate-skip {
+    position: absolute; left: 0; right: 0; bottom: 28px; z-index: 2;
+    text-align: center; font-size: 12px; letter-spacing: 0.08em; color: rgba(139,127,179,0.6);
+    transition: opacity 0.25s ease;
+  }
+  .gate.open .gate-skip { opacity: 0; }
+
+  /* header reveal as the gates open */
+  header .tag, header h1, header .lede {
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  header .tag { transition-delay: 0.45s; }
+  header h1 { transition-delay: 0.6s; }
+  header .lede { transition-delay: 0.75s; }
+  html.intro header .tag, html.intro header h1, html.intro header .lede {
+    opacity: 0; transform: translateY(14px);
+  }
+
+  @media (prefers-reduced-motion: reduce) { .gate { display: none !important; } }
 </style>
 </head>
 <body>
+<div class="gate" id="gate" aria-hidden="true">
+  <div class="door left"></div>
+  <div class="door right"></div>
+  <div class="wheel-wrap">
+    <div class="wheel-clunk">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g id="bolts"></g>
+        <circle class="w-track" cx="100" cy="100" r="90"/>
+        <circle class="w-progress" id="w-progress" cx="100" cy="100" r="90" stroke-dasharray="565.49" stroke-dashoffset="565.49"/>
+        <g class="w-wheel" id="w-wheel">
+          <circle class="rim" cx="100" cy="100" r="62"/>
+          <g id="spokes"></g>
+          <circle class="hub" cx="100" cy="100" r="15"/>
+        </g>
+      </svg>
+    </div>
+    <div class="gate-status"><b id="gate-pct">0</b>% &nbsp;<span id="gate-label">Securing</span></div>
+  </div>
+  <div class="gate-skip">click to skip</div>
+</div>
 <canvas id="ripple"></canvas>
 <div class="content">
   <header>
     <span class="tag">Web development</span>
     <h1>Hi, I'm <span class="p">Pratham</span>. I build websites for growing businesses.</h1>
-    <p class="lede">From your first e-commerce site to a full custom rebuild, backed by real, hands-on experience across the stack. If your business lives on social media right now and needs legitimacy, I'll get it a proper home online.</p>
+    <p class="lede">From a first Shopify store to a full custom rebuild, backed by real, hands-on experience across the stack. If your business lives on social media right now, I'll get it a proper home online.</p>
   </header>
 
   <section>
     <p class="eyebrow">What's behind me</p>
     <h2>The capability</h2>
     <div class="cap-box">
-      <p class="cap-lead">I'm the person you talk to, working as part of <strong>AvianGrove</strong>, to bring in the real, hands-on experience behind every build, across e-commerce, custom platforms and everything in between. Whatever your business actually needs, the resources to build it are already here.</p>
+      <p class="cap-lead">I'm the person you talk to, working as part of <strong>AvianGrove</strong>, so there's real, hands-on experience behind every build, across e-commerce, custom platforms and everything in between. Whatever your business actually needs, the resources to build it are already here.</p>
       <div class="stack-grid">
         <div class="stack-cell"><span>E-commerce</span>Shopify</div>
         <div class="stack-cell"><span>Custom stores</span>Medusa.js</div>
@@ -294,6 +419,81 @@
       ctx.fillStyle = gg; ctx.fillRect(0, 0, w, h);
     }
   } else { draw(); }
+})();
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  var gate = document.getElementById('gate');
+  if (!gate) return;
+  if (!root.classList.contains('intro')) { gate.remove(); return; }
+
+  var NS = 'http://www.w3.org/2000/svg';
+  // build 8 bolts around the ring and 6 spokes with knobs on the wheel
+  var boltsG = document.getElementById('bolts');
+  for (var i = 0; i < 8; i++) {
+    var g = document.createElementNS(NS, 'g');
+    g.setAttribute('transform', 'rotate(' + (i * 45) + ' 100 100)');
+    var r = document.createElementNS(NS, 'rect');
+    r.setAttribute('class', 'bolt');
+    r.setAttribute('x', 94); r.setAttribute('y', -4); r.setAttribute('width', 12); r.setAttribute('height', 14); r.setAttribute('rx', 2);
+    g.appendChild(r); boltsG.appendChild(g);
+  }
+  var spokesG = document.getElementById('spokes');
+  for (var s = 0; s < 6; s++) {
+    var ang = s * 60 * Math.PI / 180;
+    var x2 = 100 + Math.sin(ang) * 62, y2 = 100 - Math.cos(ang) * 62;
+    var ln = document.createElementNS(NS, 'line');
+    ln.setAttribute('class', 'spoke');
+    ln.setAttribute('x1', 100); ln.setAttribute('y1', 100); ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
+    var kn = document.createElementNS(NS, 'circle');
+    kn.setAttribute('class', 'knob'); kn.setAttribute('cx', x2); kn.setAttribute('cy', y2); kn.setAttribute('r', 7);
+    spokesG.appendChild(ln); spokesG.appendChild(kn);
+  }
+
+  var ring = document.getElementById('w-progress');
+  var wheel = document.getElementById('w-wheel');
+  var pct = document.getElementById('gate-pct');
+  var label = document.getElementById('gate-label');
+  var CIRC = 565.49, DURATION = 4000;
+  var start = null, opened = false, unlocked = false;
+
+  var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
+
+  function openGate() {
+    if (opened) return;
+    opened = true;
+    if (!unlocked) { gate.classList.add('unlocked'); label.textContent = 'Unlocked'; }
+    pct.textContent = '100';
+    ring.style.strokeDashoffset = 0;
+    root.classList.remove('intro');           // header text starts fading in
+    gate.classList.add('open');               // doors slide apart
+    setTimeout(function () {
+      root.classList.remove('intro-lock');    // restore scrolling
+      gate.remove();
+    }, 1700);
+  }
+
+  function frame(now) {
+    if (opened) return;
+    if (start === null) start = now;
+    var t = Math.min((now - start) / DURATION, 1);
+    ring.style.strokeDashoffset = CIRC * (1 - t);
+    wheel.style.transform = 'rotate(' + (easeOut(t) * 720) + 'deg)';
+    pct.textContent = Math.round(t * 100);
+    if (t >= 0.9 && !unlocked) {
+      unlocked = true;
+      gate.classList.add('unlocked');
+      label.textContent = 'Unlocked';
+    }
+    if (t < 1) requestAnimationFrame(frame);
+    else setTimeout(openGate, 250);           // brief beat on "unlocked" before the doors move
+  }
+  requestAnimationFrame(frame);
+
+  gate.addEventListener('click', openGate);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Enter') openGate(); });
+  setTimeout(openGate, DURATION + 3000);      // safety net if frames are throttled
 })();
 </script>
 </body>
