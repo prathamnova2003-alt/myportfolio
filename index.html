@@ -1,499 +1,496 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-  (function () {
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduce) document.documentElement.classList.add('intro', 'intro-lock');
-  })();
-</script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pratham Gupta — Websites for growing businesses</title>
-<meta name="description" content="I build websites for small and growing businesses. Fast turnaround, full transparency, full ownership.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pratham Gupta | Digital Marketing, CRM and Technical Research</title>
+<meta name="description" content="Digital marketing and technical research professional in Delhi. Outbound campaigns, CRM and lead research, Python and Android development. Open to roles.">
+<meta property="og:title" content="Pratham Gupta | Digital Marketing, CRM and Technical Research">
+<meta property="og:description" content="I run outbound campaigns and manage CRMs. When the right tool doesn't exist, I build it.">
+<meta property="og:type" content="profile">
+<meta name="theme-color" content="#F5F5FA">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Public+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Pratham Gupta",
+  "jobTitle": "Digital marketing and technical research professional",
+  "email": "mailto:prathamgupta8208.12e@gmail.com",
+  "address": { "@type": "PostalAddress", "addressLocality": "Delhi", "addressCountry": "IN" },
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "K.R. Mangalam University" },
+  "knowsLanguage": ["English", "Hindi"],
+  "sameAs": ["https://www.linkedin.com/in/pratham-gupta-1157a229a"]
+}
+</script>
 <style>
   :root {
-    --bg: #0E0A1A;
-    --purple: #A374FF;
-    --purple-bright: #C4A3FF;
-    --purple-dim: #6B5B9A;
-    --white: #F4F1FB;
-    --box: rgba(163, 116, 255, 0.04);
-    --box-line: rgba(163, 116, 255, 0.22);
-    --box-line-soft: rgba(163, 116, 255, 0.12);
+    --ink: #16151F;
+    --muted: #55536A;
+    --paper: #F5F5FA;
+    --card: #FFFFFF;
+    --line: #D9D8E6;
+    --accent: #5B3FD6;
+    --accent-deep: #3F27AE;
+    --tint: #ECE8FB;
+    --ok: #1E9E62;
+    --display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+    --body: 'Public Sans', 'Segoe UI', system-ui, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--bg); color: var(--white);
-    font-family: 'Space Grotesk', sans-serif; line-height: 1.6;
-    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   }
-  #ripple { position: fixed; inset: 0; z-index: 0; display: block; }
-  .content { position: relative; z-index: 1; width: 90%; max-width: 1200px; margin: 0 auto; padding: 0; }
-  .lede, .cap-lead, p.note, .offer-row p, .card-blurb { max-width: 62ch; }
-  header { padding: 110px 0 70px; }
-  .tag {
-    display: inline-block; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--purple); border: 1px solid var(--box-line); padding: 6px 12px; margin-bottom: 28px;
-  }
-  h1 { font-size: clamp(34px, 6vw, 60px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 22px; }
-  h1 .p { color: var(--purple); }
-  .lede { font-size: 18px; color: rgba(244, 241, 251, 0.7); max-width: 48ch; }
-  section { padding: 40px 0; }
-  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--purple-dim); margin-bottom: 10px; }
-  h2 { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 30px; }
-  .cap-box { border: 1px solid var(--box-line); background: var(--box); padding: 32px; }
-  .cap-lead { font-size: 17px; color: rgba(244, 241, 251, 0.85); margin-bottom: 26px; }
-  .cap-lead strong { color: var(--purple-bright); font-weight: 600; }
-  .stack-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    border-top: 1px solid var(--box-line-soft); border-left: 1px solid var(--box-line-soft);
-  }
-  .stack-cell { border-right: 1px solid var(--box-line-soft); border-bottom: 1px solid var(--box-line-soft); padding: 14px 16px; font-size: 14px; }
-  .stack-cell span { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple-dim); margin-bottom: 4px; }
-  .work { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
-  .card {
-    border: 1px solid var(--box-line-soft); background: var(--box); text-decoration: none;
-    color: var(--white); display: flex; flex-direction: column;
-    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    transform-origin: center;
-  }
-  .card:hover {
-    border-color: var(--purple);
-    transform: translateY(-6px) scale(1.035);
-    box-shadow: 0 18px 40px rgba(163, 116, 255, 0.18);
-    z-index: 2;
-  }
-  .shot img { transition: transform 0.4s ease; }
-  .card:hover .shot img { transform: scale(1.06); }
-  .card:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
-  .shot {
-    aspect-ratio: 16 / 10;
-    background: linear-gradient(135deg, rgba(163,116,255,0.14), rgba(163,116,255,0.03));
-    border-bottom: 1px solid var(--box-line-soft);
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-  }
-  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .shot .ph { font-size: 12px; color: var(--purple-dim); letter-spacing: 0.05em; }
-  .card-body { padding: 16px 18px 20px; }
-  .card-name { font-size: 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  .card-name .arr { color: var(--purple); opacity: 0; transition: opacity 0.2s ease; }
-  .card:hover .card-name .arr { opacity: 1; }
-  .card-cat { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple-dim); margin: 4px 0 10px; }
-  .card-blurb { font-size: 13.5px; color: rgba(244, 241, 251, 0.62); line-height: 1.5; }
-  .offer { display: grid; gap: 0; border: 1px solid var(--box-line); }
-  .offer-row { padding: 22px 26px; border-bottom: 1px solid var(--box-line-soft); display: flex; gap: 18px; align-items: flex-start; }
-  .offer-row:last-child { border-bottom: none; }
-  .offer-num { color: var(--purple); font-weight: 700; font-size: 15px; flex-shrink: 0; }
-  .offer-row h3 { font-size: 16px; font-weight: 600; margin-bottom: 3px; }
-  .offer-row p { font-size: 14px; color: rgba(244, 241, 251, 0.62); }
-  .contact-box { border: 1px solid var(--box-line); background: var(--box); padding: 32px; }
-  .contact-box a { color: var(--purple-bright); text-decoration: none; border-bottom: 1px solid var(--box-line); transition: border-color 0.2s ease; }
-  .contact-box a:hover { border-color: var(--purple-bright); }
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 22px; }
-  .contact-grid .label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple-dim); margin-bottom: 6px; }
-  .contact-grid p { font-size: 14.5px; }
-  footer { padding: 50px 0 90px; text-align: center; color: var(--purple-dim); font-size: 13px; }
-  footer a { color: var(--purple-dim); text-decoration: none; border-bottom: 1px solid rgba(163, 116, 255, 0.2); transition: color 0.2s ease, border-color 0.2s ease; }
-  footer a:hover { color: var(--purple-bright); border-color: var(--purple-bright); }
-  @media (max-width: 900px) {
-    .stack-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; z-index: 50; }
+  .skip:focus { left: 12px; }
+  section[id] { scroll-margin-top: 84px; }
 
+  /* ---------- header ---------- */
+  .top {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(245, 245, 250, 0.93); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar { max-width: 1120px; margin: 0 auto; padding: 12px 28px; display: flex; align-items: center; gap: 30px; }
+  .brand { font: 700 19px/1 var(--display); letter-spacing: -0.01em; text-decoration: none; white-space: nowrap; }
+  .nav { display: flex; gap: 22px; margin-left: auto; font-size: 14.5px; }
+  .nav a { text-decoration: none; color: var(--muted); padding: 6px 0; border-bottom: 2px solid transparent; transition: color 0.2s ease, border-color 0.2s ease; }
+  .nav a:hover { color: var(--ink); }
+  .nav a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+
+  .btn {
+    display: inline-block; text-decoration: none; cursor: pointer; font: 600 15px/1 var(--body);
+    padding: 13px 20px; border-radius: 8px; border: 1.5px solid var(--ink); color: var(--ink); background: transparent;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .btn:hover { background: var(--ink); color: #fff; }
+  .btn.solid { background: var(--ink); color: #fff; }
+  .btn.solid:hover { background: var(--accent); border-color: var(--accent); }
+  .btn.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+  .btn.small { padding: 10px 16px; font-size: 14px; white-space: nowrap; }
+  .pill { display: none; }
+
+  /* ---------- hero ---------- */
+  .hero { max-width: 1120px; margin: 0 auto; padding: 76px 28px 64px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 64px; align-items: start; }
+  h1 {
+    font: 800 clamp(56px, 9.6vw, 116px)/0.9 var(--display); letter-spacing: -0.018em;
+    font-variation-settings: 'wdth' 80, 'opsz' 96; margin-bottom: 34px;
+  }
+  h1 span { display: block; }
+  .lede { font: 500 clamp(23px, 2.7vw, 31px)/1.25 var(--display); letter-spacing: -0.01em; max-width: 22em; margin-bottom: 22px; }
+  .summary { color: var(--muted); max-width: 33em; margin-bottom: 32px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .record { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 8px 26px 12px; margin-top: 8px; }
+  .status { display: flex; align-items: center; gap: 10px; font-weight: 600; padding: 16px 0 14px; border-bottom: 1px solid var(--line); }
+  .status i { width: 10px; height: 10px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(30, 158, 98, 0.16); }
+  .record dl > div { padding: 13px 0; border-bottom: 1px solid var(--line); }
+  .record dl > div:last-child { border-bottom: none; }
+  .record dt { font-size: 13.5px; color: var(--muted); margin-bottom: 2px; }
+  .record dd { font-size: 16px; line-height: 1.45; }
+  .record dd a { text-decoration: none; border-bottom: 1.5px solid var(--line); transition: border-color 0.2s ease, color 0.2s ease; }
+  .record dd a:hover { color: var(--accent-deep); border-color: var(--accent); }
+
+  /* ---------- sections ---------- */
+  .sec { max-width: 1120px; margin: 0 auto; padding: 60px 28px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; border-top: 1px solid var(--line); }
+  h2 { font: 700 30px/1.1 var(--display); letter-spacing: -0.02em; font-variation-settings: 'wdth' 90; }
+  h3 { font: 650 20px/1.25 var(--display); letter-spacing: -0.01em; }
+  .sec p, .sec li { max-width: 40em; }
+
+  /* ledger of results */
+  .ledger { list-style: none; }
+  .ledger li { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 28px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--line); max-width: none; }
+  .ledger li:first-child { padding-top: 0; }
+  .ledger li:last-child { border-bottom: none; }
+  .fig { font: 800 64px/1 var(--display); letter-spacing: -0.04em; color: var(--accent); font-variant-numeric: tabular-nums; font-variation-settings: 'wdth' 85; }
+  .ledger p { font-size: 19px; line-height: 1.35; }
+  .ledger small { display: block; font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  /* how I work */
+  .how { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 44px; }
+  .how b { display: block; font: 650 18px/1.3 var(--display); margin-bottom: 4px; }
+  .how p { color: var(--muted); }
+
+  /* experience and education rows */
+  .row { display: grid; grid-template-columns: 176px minmax(0, 1fr); gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--line); }
+  .row:first-child { padding-top: 0; }
+  .row:last-child { border-bottom: none; padding-bottom: 0; }
+  .when { font-size: 14.5px; color: var(--muted); line-height: 1.5; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .org { color: var(--muted); margin: 2px 0 12px; }
+  .row ul { list-style: none; }
+  .row li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+  .row li::before { content: ""; position: absolute; left: 0; top: 0.78em; width: 9px; height: 2px; background: var(--accent); }
+
+  /* projects */
+  .note { color: var(--muted); margin-bottom: 8px; max-width: 40em; }
+  .proj { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--line); }
+  .proj:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .kind { color: var(--muted); font-size: 15px; margin-top: 2px; }
+  .stack { color: var(--accent-deep); font-size: 14.5px; margin-top: 10px; line-height: 1.45; }
+
+  /* skills */
+  .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 44px; }
+  .skills h3 { font-size: 17px; margin-bottom: 6px; }
+  .skills p { color: var(--muted); font-size: 16px; }
+
+  /* contact */
+  .mail-big { font: 700 clamp(26px, 4.4vw, 46px)/1.1 var(--display); letter-spacing: -0.025em; text-decoration: none; border-bottom: 3px solid var(--accent); word-break: break-all; }
+  .mail-big:hover { color: var(--accent-deep); }
+  .contact-lines { margin: 26px 0 30px; list-style: none; }
+  .contact-lines li { margin-bottom: 4px; }
+  .contact-lines a { text-decoration: none; border-bottom: 1.5px solid var(--line); }
+  .contact-lines a:hover { color: var(--accent-deep); border-color: var(--accent); }
+
+  footer { max-width: 1120px; margin: 0 auto; padding: 30px 28px 70px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+
+  /* ---------- small screens ---------- */
+  @media (max-width: 940px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 40px; }
+    .pill { display: inline-flex; align-items: center; gap: 9px; font-weight: 600; font-size: 14.5px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px 7px 12px; margin-bottom: 22px; }
+    .pill i { width: 9px; height: 9px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px rgba(30, 158, 98, 0.16); }
+    .record .status { display: none; }
+    .record dl > div:first-child { padding-top: 16px; }
+    .sec { grid-template-columns: 1fr; gap: 24px; padding: 48px 24px; }
+    .nav { display: none; }
+    .bar { padding: 11px 20px; }
+    .bar .btn { margin-left: auto; }
+    .hero { padding-left: 24px; padding-right: 24px; }
+    footer { padding-left: 24px; padding-right: 24px; }
+  }
   @media (max-width: 620px) {
-    .contact-grid { grid-template-columns: 1fr; }
-    header { padding: 64px 0 40px; }
-    section { padding: 32px 0; }
-    .cap-box, .contact-box { padding: 20px; }
-    h2 { font-size: 22px; }
-    .lede { font-size: 16px; }
+    body { font-size: 16.5px; }
+    .pdf-tag { display: none; }
+    .row, .proj { grid-template-columns: 1fr; gap: 6px; }
+    .ledger li { grid-template-columns: 112px minmax(0, 1fr); gap: 16px; }
+    .fig { font-size: 46px; }
+    .ledger p { font-size: 17px; }
+    .how, .skills { grid-template-columns: 1fr; gap: 24px; }
+    .record { padding: 6px 20px 10px; }
+    .cta .btn { flex: 1 1 100%; text-align: center; }
   }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 
-  @media (max-width: 400px) {
-    .tag { font-size: 11px; padding: 5px 10px; }
-    .card-body { padding: 14px 16px 18px; }
+  /* ---------- print: a compact resume ---------- */
+  @media print {
+    @page { margin: 12mm; }
+    body { background: #fff; font-size: 9.5pt; line-height: 1.38; }
+    .top, .skip, .cta, .btn, .pill, .how, .note { display: none !important; }
+    .hero { display: block; padding: 0 0 6pt; }
+    h1 { font-size: 28pt; margin-bottom: 4pt; letter-spacing: 0; }
+    h1 span { display: inline; }
+    .lede { font-size: 11.5pt; margin-bottom: 4pt; max-width: none; }
+    .summary { font-size: 9.5pt; margin-bottom: 6pt; max-width: none; }
+    .record { border: 1px solid #bbb; border-radius: 4px; margin-top: 4pt; padding: 2pt 10pt; }
+    .status { padding: 4pt 0; }
+    .record dl > div { padding: 3pt 0; }
+    .record dt { font-size: 8pt; } .record dd { font-size: 9pt; }
+    .sec { display: block; padding: 8pt 0; border-top: 1px solid #bbb; }
+    h2 { margin-bottom: 5pt; font-size: 12.5pt; }
+    h3 { font-size: 10.5pt; }
+    .ledger li { grid-template-columns: 70pt 1fr; padding: 3pt 0; gap: 10pt; break-inside: avoid; }
+    .fig { font-size: 20pt; color: #000; }
+    .ledger p { font-size: 9.5pt; } .ledger small { font-size: 8pt; margin-top: 0; }
+    .row, .proj { grid-template-columns: 92pt 1fr; gap: 10pt; padding: 6pt 0; break-inside: avoid; }
+    .when { white-space: normal; font-size: 8.5pt; }
+    #how { display: none !important; }
+    .row li { margin-bottom: 2pt; }
+    .org { margin: 0 0 3pt; }
+    .skills { gap: 6pt 18pt; } .skills h3 { font-size: 9.5pt; margin-bottom: 1pt; } .skills p { font-size: 9pt; }
+    .contact-lines { margin: 4pt 0; }
+    .mail-big { font-size: 12pt; border: none; }
+    a { color: inherit; text-decoration: none; }
+    footer { padding: 6pt 0 0; font-size: 8pt; }
   }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
-  /* ---------- Bunker gate intro ---------- */
-  .gate { display: none; }
-  html.intro-lock, html.intro-lock body { overflow: hidden; height: 100%; }
-  html.intro-lock .gate, html.intro .gate { display: block; }
-
-  .gate { position: fixed; inset: 0; z-index: 9999; cursor: pointer; }
-
-  .door {
-    position: absolute; top: 0; bottom: 0; width: 50%;
-    background:
-      linear-gradient(90deg, rgba(255,255,255,0.035), transparent 35%),
-      repeating-linear-gradient(0deg, transparent 0 118px, rgba(0,0,0,0.5) 118px 122px, rgba(163,116,255,0.10) 122px 124px),
-      linear-gradient(180deg, #1B1233, #0B0716);
-    transition: transform 1.5s cubic-bezier(0.77, 0, 0.18, 1);
-    will-change: transform;
-  }
-  .door.left { left: 0; }
-  .door.right { right: 0; }
-
-  /* heavy inner edge with a faint purple glow along the seam */
-  .door::after {
-    content: ""; position: absolute; top: 0; bottom: 0; width: 22px;
-    background: linear-gradient(90deg, #08050F, #1E1538 45%, #08050F);
-    box-shadow: 0 0 28px rgba(163, 116, 255, 0.18);
-  }
-  .door.left::after { right: 0; border-right: 1px solid rgba(163, 116, 255, 0.35); }
-  .door.right::after { left: 0; border-left: 1px solid rgba(163, 116, 255, 0.35); }
-
-  /* rivets running down each door's inner edge */
-  .door::before {
-    content: ""; position: absolute; top: 0; bottom: 0; width: 14px; z-index: 1;
-    background: radial-gradient(circle at 50% 50%, rgba(196,163,255,0.55) 0 2.5px, rgba(0,0,0,0.65) 3px 4.5px, transparent 5.5px);
-    background-size: 14px 60px;
-  }
-  .door.left::before { right: 38px; }
-  .door.right::before { left: 38px; }
-
-  .gate.open .door.left { transform: translateX(-101%); }
-  .gate.open .door.right { transform: translateX(101%); }
-
-  .wheel-wrap {
-    position: absolute; top: 50%; left: 50%;
-    width: clamp(190px, 38vw, 300px);
-    transform: translate(-50%, -50%);
-    text-align: center; z-index: 2;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    animation: gateFade 0.9s ease;
-  }
-  .gate.open .wheel-wrap {
-    opacity: 0; transform: translate(-50%, -50%) scale(1.12);
-    animation: none; pointer-events: none;
-  }
-  @keyframes gateFade { from { opacity: 0; } to { opacity: 1; } }
-
-  .wheel-wrap svg { width: 100%; height: auto; display: block; overflow: visible; }
-  .w-track { fill: none; stroke: rgba(163,116,255,0.16); stroke-width: 5; }
-  .w-progress { fill: none; stroke: #A374FF; stroke-width: 5; stroke-linecap: round;
-    transform: rotate(-90deg); transform-origin: 100px 100px; transition: stroke 0.3s ease; }
-  .w-wheel { transform-origin: 100px 100px; }
-  .w-wheel .rim { fill: none; stroke: #6B5B9A; stroke-width: 5; transition: stroke 0.3s ease; }
-  .w-wheel .spoke { stroke: #6B5B9A; stroke-width: 5; stroke-linecap: round; transition: stroke 0.3s ease; }
-  .w-wheel .knob { fill: #0E0A1A; stroke: #8F7ACB; stroke-width: 3; transition: stroke 0.3s ease; }
-  .w-wheel .hub { fill: #0E0A1A; stroke: #A374FF; stroke-width: 4; }
-  .bolt { fill: #6B5B9A; transition: transform 0.45s cubic-bezier(0.5, 0, 0.2, 1), fill 0.3s ease, opacity 0.45s ease; }
-
-  .gate.unlocked .w-progress { stroke: #C4A3FF; }
-  .gate.unlocked .w-wheel .rim,
-  .gate.unlocked .w-wheel .spoke { stroke: #C4A3FF; }
-  .gate.unlocked .w-wheel .knob { stroke: #C4A3FF; }
-  .gate.unlocked .bolt { fill: #C4A3FF; opacity: 0; transform: translateY(-12px); }
-  .gate.unlocked .wheel-clunk { animation: clunk 0.35s ease; }
-  @keyframes clunk { 0% { transform: scale(1); } 40% { transform: scale(1.045); } 100% { transform: scale(1); } }
-
-  .gate-status {
-    margin-top: 18px; font-size: 13px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #8B7FB3;
-  }
-  .gate-status b { color: var(--white); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .gate.unlocked .gate-status { color: var(--purple-bright); }
-  .gate-skip {
-    position: absolute; left: 0; right: 0; bottom: 28px; z-index: 2;
-    text-align: center; font-size: 12px; letter-spacing: 0.08em; color: rgba(139,127,179,0.6);
-    transition: opacity 0.25s ease;
-  }
-  .gate.open .gate-skip { opacity: 0; }
-
-  /* header reveal as the gates open */
-  header .tag, header h1, header .lede {
-    transition: opacity 0.9s ease, transform 0.9s ease;
-  }
-  header .tag { transition-delay: 0.45s; }
-  header h1 { transition-delay: 0.6s; }
-  header .lede { transition-delay: 0.75s; }
-  html.intro header .tag, html.intro header h1, html.intro header .lede {
-    opacity: 0; transform: translateY(14px);
-  }
-
-  @media (prefers-reduced-motion: reduce) { .gate { display: none !important; } }
 </style>
 </head>
 <body>
-<div class="gate" id="gate" aria-hidden="true">
-  <div class="door left"></div>
-  <div class="door right"></div>
-  <div class="wheel-wrap">
-    <div class="wheel-clunk">
-      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <g id="bolts"></g>
-        <circle class="w-track" cx="100" cy="100" r="90"/>
-        <circle class="w-progress" id="w-progress" cx="100" cy="100" r="90" stroke-dasharray="565.49" stroke-dashoffset="565.49"/>
-        <g class="w-wheel" id="w-wheel">
-          <circle class="rim" cx="100" cy="100" r="62"/>
-          <g id="spokes"></g>
-          <circle class="hub" cx="100" cy="100" r="15"/>
-        </g>
-      </svg>
-    </div>
-    <div class="gate-status"><b id="gate-pct">0</b>% &nbsp;<span id="gate-label">Securing</span></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="#top">Pratham Gupta</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#results">Results</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn solid small" href="Pratham_Gupta_Resume.pdf" download>Download resume<span class="pdf-tag"> (PDF)</span></a>
   </div>
-  <div class="gate-skip">click to skip</div>
-</div>
-<canvas id="ripple"></canvas>
-<div class="content">
-  <header>
-    <span class="tag">Web development</span>
-    <h1>Hi, I'm <span class="p">Pratham</span>. I build websites for growing businesses.</h1>
-    <p class="lede">From a first Shopify store to a full custom rebuild, backed by real, hands-on experience across the stack. If your business lives on social media right now, I'll get it a proper home online.</p>
-  </header>
+</header>
 
-  <section>
-    <p class="eyebrow">What's behind me</p>
-    <h2>The capability</h2>
-    <div class="cap-box">
-      <p class="cap-lead">I'm the person you talk to, working as part of <strong>AvianGrove</strong>, so there's real, hands-on experience behind every build, across e-commerce, custom platforms and everything in between. Whatever your business actually needs, the resources to build it are already here.</p>
-      <div class="stack-grid">
-        <div class="stack-cell"><span>E-commerce</span>Shopify</div>
-        <div class="stack-cell"><span>Custom stores</span>Medusa.js</div>
-        <div class="stack-cell"><span>CMS</span>WordPress / WooCommerce</div>
-        <div class="stack-cell"><span>Frontend</span>React / Next.js</div>
-        <div class="stack-cell"><span>Backend</span>Node.js / PHP</div>
-        <div class="stack-cell"><span>Styling</span>Tailwind CSS</div>
-        <div class="stack-cell"><span>Search</span>SEO &amp; Google Business</div>
-        <div class="stack-cell"><span>Integrations</span>Payments / Booking</div>
+<main id="main">
+
+  <section class="hero" id="top" aria-label="Introduction">
+    <div>
+      <p class="pill"><i aria-hidden="true"></i>Open to roles in Delhi NCR and remote</p>
+      <h1><span>Pratham</span> <span>Gupta</span></h1>
+      <p class="lede">I run outbound campaigns and manage CRMs. When the right tool doesn't exist, I build it.</p>
+      <p class="summary">Digital marketing and technical research professional with hands-on experience in campaign execution, CRM management and client communication, plus applied work in process simulation, optimisation and Android development. B.Pharm graduate, bilingual in English and Hindi.</p>
+      <div class="cta">
+        <a class="btn accent" href="mailto:prathamgupta8208.12e@gmail.com">Email me</a>
+        <a class="btn" href="https://www.linkedin.com/in/pratham-gupta-1157a229a" target="_blank" rel="noopener">LinkedIn profile</a>
+      </div>
+    </div>
+
+    <aside class="record" aria-label="At a glance">
+      <div class="status"><i aria-hidden="true"></i>Open to roles</div>
+      <dl>
+        <div><dt>Looking for</dt><dd>Digital marketing, business development, client success and data research roles</dd></div>
+        <div><dt>Based in</dt><dd>Delhi, India. Open to Delhi NCR (Noida, Gurugram) and remote</dd></div>
+        <div><dt>Work type</dt><dd>Full-time, part-time or contract</dd></div>
+        <div><dt>Languages</dt><dd>English and Hindi</dd></div>
+        <div><dt>Reach me</dt><dd><a href="mailto:prathamgupta8208.12e@gmail.com">prathamgupta8208.12e@gmail.com</a><br><a href="tel:+919811856951">+91 98118 56951</a></dd></div>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="sec" id="results" aria-labelledby="h-results">
+    <h2 id="h-results">Results</h2>
+    <ul class="ledger">
+      <li><span class="fig" data-to="20" data-suffix="%">20%</span><p>response rate on outbound email campaigns<small>Avian Grove, June 2025 to January 2026</small></p></li>
+      <li><span class="fig" data-to="50" data-suffix="+">50+</span><p>prospective clients coordinated every month<small>Avian Grove, June 2025 to January 2026</small></p></li>
+      <li><span class="fig" data-to="15" data-suffix="%">15%</span><p>increase in client engagement from brand positioning work<small>Avian Grove, June 2025 to January 2026</small></p></li>
+      <li><span class="fig" data-to="7" data-suffix="">7</span><p>months from intern to full-time at Avian Grove<small>November 2024 to June 2025</small></p></li>
+    </ul>
+  </section>
+
+  <section class="sec" id="how" aria-labelledby="h-how">
+    <h2 id="h-how">How I work</h2>
+    <div class="how">
+      <div><b>I measure what a campaign did.</b><p>Every lead, follow-up and conversion goes into the CRM, so the next campaign starts from evidence instead of a guess.</p></div>
+      <div><b>I script the repeatable parts.</b><p>Lead research, mailbox rotation and website audits are tools I built, which leaves more time for the conversations that matter.</p></div>
+      <div><b>I use AI tools and check the output.</b><p>I write the requirements, test the result on real data and verify it before anything ships.</p></div>
+      <div><b>I write for the reader.</b><p>I have turned technical results into documentation that a non-technical audience could actually use.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="experience" aria-labelledby="h-exp">
+    <h2 id="h-exp">Experience</h2>
+    <div>
+      <article class="row">
+        <div class="when"><time datetime="2026-06">Jun 2026</time> to <time datetime="2026-07">Jul 2026</time></div>
+        <div>
+          <h3>Contractual project manager, employee management system</h3>
+          <p class="org">Dev Enterprises</p>
+          <ul>
+            <li>Guided development of a custom employee management system under an independent contract, working directly with the client to scope and deliver requirements.</li>
+            <li>Coordinated tasks and timelines between the client and the development team.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="when"><time datetime="2026-02">Feb 2026</time> to <time datetime="2026-05">May 2026</time></div>
+        <div>
+          <h3>Data research executive</h3>
+          <p class="org">Sphinx Worldbiz Limited</p>
+          <ul>
+            <li>Researched, collected and validated data to support business decisions, delivering clean datasets and reporting to internal teams.</li>
+            <li>Built the groundwork for an automated lead generation process for the European market, connecting tools such as Apollo, Sales Navigator, Google Sheets and a CRM, from lead discovery and nurturing through to a handover for a human sales call.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="when"><time datetime="2025-06">Jun 2025</time> to <time datetime="2026-01">Jan 2026</time></div>
+        <div>
+          <h3>Digital marketing executive</h3>
+          <p class="org">Avian Grove, Noida, Uttar Pradesh</p>
+          <ul>
+            <li>Ran outbound email campaigns and coordinated communication with 50+ prospective clients a month, with a 20% response rate.</li>
+            <li>Managed the CRM to track leads, follow-ups and conversions, keeping client communication organised and timely.</li>
+            <li>Ran digital marketing work (social content and SEO) that improved brand visibility on LinkedIn and Google Search.</li>
+            <li>Supported brand positioning initiatives that contributed to a 15% increase in client engagement.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="when"><time datetime="2024-11">Nov 2024</time> to <time datetime="2025-05">May 2025</time></div>
+        <div>
+          <h3>Digital marketing intern</h3>
+          <p class="org">Avian Grove, Noida, Uttar Pradesh</p>
+          <ul>
+            <li>Set up the first CRM and client communication workflows, later scaled into the full-time role.</li>
+            <li>Assisted with digital campaign execution and content coordination, including work on Google Ads and Meta Ads campaigns.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" id="projects" aria-labelledby="h-proj">
+    <h2 id="h-proj">Projects</h2>
+    <div>
+      <p class="note">Built with AI assistance (Claude). I write the requirements, test the output on real data and verify it before I rely on it.</p>
+
+      <article class="proj">
+        <div>
+          <h3>Site Auditor</h3>
+          <p class="kind">Chrome extension</p>
+          <p class="stack">JavaScript, Manifest V3, DNS-over-HTTPS</p>
+        </div>
+        <p>One-click audit of any website, built to find specific, checkable gaps for outreach instead of a generic score. It detects 48 platforms and tools (Shopify, WordPress, React, Stripe, Klaviyo and more), checks security headers, exposed files and email authentication records (SPF and DMARC), and grades findings by business type so a bakery is not marked down for lacking a checkout. Exports JSON and Markdown.</p>
+      </article>
+
+      <article class="proj">
+        <div>
+          <h3>Outreach Rotation Tracker</h3>
+          <p class="kind">Browser tool, runs locally</p>
+          <p class="stack">HTML, CSS, JavaScript</p>
+        </div>
+        <p>Spreads a day's contacts evenly across several company mailboxes in round-robin order and enforces a daily cap on each, so no inbox carries the whole load. Imports spreadsheets with column mapping and schedules timed batches, for example 40 emails at noon and 40 at 4 pm. Sending stays manual and no passwords are stored.</p>
+      </article>
+
+      <article class="proj">
+        <div>
+          <h3>Android file and media converter</h3>
+          <p class="kind">Solo project, in development since June 2026</p>
+          <p class="stack">Kotlin, Jetpack Compose, Android Studio</p>
+        </div>
+        <p>A privacy-first converter that runs entirely on the phone, with no server, accounts or tracking. Converts between eight image formats including HEIC, AVIF and TIFF, builds GIFs and animated WebP, turns PDFs into images and back, merges and splits PDFs, and compresses images to a target file size. Not yet released.</p>
+      </article>
+
+      <article class="proj">
+        <div>
+          <h3>Continuous paracetamol manufacturing</h3>
+          <p class="kind">Collaborator on a University of Surrey MSc dissertation project</p>
+          <p class="stack">Python, NSGA-II (pymoo), DWSIM</p>
+        </div>
+        <p>Wrote and led the Python codebase for a multi-objective optimisation and cost analysis of a continuous pharmaceutical process, using process simulation software and optimisation algorithms. Coded the statistical sensitivity analysis and turned the results into documentation for a non-technical academic audience.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" id="skills" aria-labelledby="h-skills">
+    <h2 id="h-skills">Skills</h2>
+    <div class="skills">
+      <div><h3>Marketing and outreach</h3><p>Outbound email campaigns, campaign coordination, email marketing, SEO, social media marketing, Google Ads, Meta Ads, brand positioning, client communication, email and chat support.</p></div>
+      <div><h3>CRM and lead research</h3><p>HubSpot, Salesforce, Apollo, LinkedIn Sales Navigator, Google Sheets, data collection and validation, lead generation workflows.</p></div>
+      <div><h3>Email deliverability</h3><p>Working knowledge of SPF, DKIM and DMARC, sender reputation and warm-up, Google Postmaster Tools, and diagnosing why mail lands in spam.</p></div>
+      <div><h3>Programming</h3><p>Python, Kotlin (Jetpack Compose), JavaScript (Chrome extensions), HTML and CSS, Git.</p></div>
+      <div><h3>Research and analysis</h3><p>Process simulation and optimisation, sensitivity analysis, techno-economic analysis, technical documentation for non-technical readers.</p></div>
+      <div><h3>Web and e-commerce</h3><p>Shopify, WordPress and WooCommerce, website and tech-stack audits, Google Business Profile, scoping website projects with clients.</p></div>
+      <div><h3>Tools and working style</h3><p>Google Workspace, MS Office, Adobe Premiere Pro, AI-assisted work with verification (Claude, ChatGPT).</p></div>
+      <div><h3>Languages</h3><p>English and Hindi.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="education" aria-labelledby="h-edu">
+    <h2 id="h-edu">Education</h2>
+    <div>
+      <article class="row">
+        <div class="when">2021 to 2025</div>
+        <div><h3>Bachelor of Pharmacy</h3><p class="org">K.R. Mangalam University, Haryana. CGPA 6.8</p></div>
+      </article>
+      <article class="row">
+        <div class="when">2026</div>
+        <div><h3>Google Digital Marketing and E-commerce Professional Certificate</h3></div>
+      </article>
+      <article class="row">
+        <div class="when">Schooling</div>
+        <div><h3>S.T. Mary's Public School</h3><p class="org">Class 12, CGPA 7.5. Class 10, CGPA 7.6</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" id="contact" aria-labelledby="h-contact">
+    <h2 id="h-contact">Contact</h2>
+    <div>
+      <a class="mail-big" href="mailto:prathamgupta8208.12e@gmail.com">prathamgupta8208.12e@gmail.com</a>
+      <ul class="contact-lines">
+        <li><a href="tel:+919811856951">+91 98118 56951</a></li>
+        <li><a href="https://www.linkedin.com/in/pratham-gupta-1157a229a" target="_blank" rel="noopener">linkedin.com/in/pratham-gupta-1157a229a</a></li>
+        <li>Delhi, India</li>
+      </ul>
+      <div class="cta">
+        <a class="btn solid" href="Pratham_Gupta_Resume.pdf" download>Download resume (PDF)</a>
+        <button type="button" class="btn" id="copy-email" aria-live="polite">Copy email</button>
       </div>
     </div>
   </section>
 
-  <section>
-    <p class="eyebrow">Selected work</p>
-    <h2>Live sites, real businesses</h2>
-    <div class="work">
-      <a class="card" href="https://ecigone.co.uk" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/ecigone.png" alt="ecigone.co.uk" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">ecigone.co.uk <span class="arr">&#8599;</span></div><div class="card-cat">E-commerce &middot; Vape retail</div><p class="card-blurb">If you're after vape gear, genuinely worth a look, one of the widest ranges I've seen done properly.</p></div>
-      </a>
-      <a class="card" href="https://gldn.com" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/gldn.png" alt="gldn.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">gldn.com <span class="arr">&#8599;</span></div><div class="card-cat">E-commerce &middot; Jewellery</div><p class="card-blurb">Beautiful, understated jewellery, the kind of pieces that don't need to shout to stand out.</p></div>
-      </a>
-      <a class="card" href="https://lexxola.com" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/lexxola.png" alt="lexxola.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">lexxola.com <span class="arr">&#8599;</span></div><div class="card-cat">E-commerce &middot; Eyewear</div><p class="card-blurb">Sharp, distinctive eyewear if you want something with real personality on your face.</p></div>
-      </a>
-      <a class="card" href="https://katiemakinjewellery.com" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/katiemakin.png" alt="katiemakinjewellery.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">katiemakinjewellery.com <span class="arr">&#8599;</span></div><div class="card-cat">E-commerce &middot; Handmade jewellery</div><p class="card-blurb">Proper handmade pieces, you can tell real care goes into each one.</p></div>
-      </a>
-      <a class="card" href="https://anabeldesign.co.uk" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/anabel.png" alt="anabeldesign.co.uk" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">anabeldesign.co.uk <span class="arr">&#8599;</span></div><div class="card-cat">Curtains &amp; soft furnishings</div><p class="card-blurb">If you need curtains or blinds done properly, these are the people I'd actually recommend.</p></div>
-      </a>
-      <a class="card" href="https://travelwithshay.com" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/travelwithshay.png" alt="travelwithshay.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">travelwithshay.com <span class="arr">&#8599;</span></div><div class="card-cat">Independent travel agent</div><p class="card-blurb">If you're planning a trip and want it sorted by an actual person, not a chatbot, start here.</p></div>
-      </a>
-      <a class="card" href="https://nobile.in" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/nobile.png" alt="nobile.in" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">nobile.in <span class="arr">&#8599;</span></div><div class="card-cat">Kitchens &amp; home decor</div><p class="card-blurb">Genuinely lovely kitchen and home decor pieces, worth a browse even just for inspiration.</p></div>
-      </a>
-      <a class="card" href="https://4seasontravels.com" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/4season.png" alt="4seasontravels.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">4seasontravels.com <span class="arr">&#8599;</span></div><div class="card-cat">Travel agency</div><p class="card-blurb">A solid pick if you want a proper travel agency handling the details for you.</p></div>
-      </a>
-      <a class="card" href="https://heavenhues.in" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/heavenhues.png" alt="heavenhues.in" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">heavenhues.in <span class="arr">&#8599;</span></div><div class="card-cat">Scented candles</div><p class="card-blurb">Their candles smell as good as the site looks, which is saying something.</p></div>
-      </a>
-      <a class="card" href="https://danielsimmons.co" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/danielsimmons.png" alt="danielsimmons.co" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">danielsimmons.co <span class="arr">&#8599;</span></div><div class="card-cat">Premium menswear</div><p class="card-blurb">Quietly one of the better menswear brands I've come across, worth a look.</p></div>
-      </a>
-      <a class="card" href="https://azatmardofficial.com" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/azatmard.png" alt="azatmardofficial.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">azatmardofficial.com <span class="arr">&#8599;</span></div><div class="card-cat">Premium fashion</div><p class="card-blurb">Real craftsmanship behind this one, a brand worth keeping an eye on.</p></div>
-      </a>
-      <a class="card" href="https://zibaa.in" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/zibaa.png" alt="zibaa.in" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">zibaa.in <span class="arr">&#8599;</span></div><div class="card-cat">Fashion &middot; Ethnic wear</div><p class="card-blurb">Genuinely striking ethnic wear, colours done properly, not washed out.</p></div>
-      </a>
-      <a class="card" href="https://general-pharmaceuticals.com" target="_blank" rel="noopener">
-        <div class="shot"><img src="images/general-pharma.png" alt="general-pharmaceuticals.com" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>screenshot</span>'"></div>
-        <div class="card-body"><div class="card-name">general-pharmaceuticals.com <span class="arr">&#8599;</span></div><div class="card-cat">Pharmaceuticals</div><p class="card-blurb">A properly run pharmaceutical supplier, exactly what you want in that space, no-nonsense and reliable.</p></div>
-      </a>
-    </div>
-  </section>
+</main>
 
-  <section>
-    <p class="eyebrow">Working together</p>
-    <h2>What you get</h2>
-    <div class="offer">
-      <div class="offer-row"><span class="offer-num">01</span><div><h3>Fast turnaround</h3><p>Most sites go live in around a week once we've agreed on what you want, no dragging it out over months.</p></div></div>
-      <div class="offer-row"><span class="offer-num">02</span><div><h3>Full transparency</h3><p>A clear price agreed upfront, no hidden extras added later, and you always know exactly where the build is.</p></div></div>
-      <div class="offer-row"><span class="offer-num">03</span><div><h3>Full ownership</h3><p>The finished site is yours, domain, hosting and all, with nothing locked behind me.</p></div></div>
-    </div>
-  </section>
-
-  <section>
-    <p class="eyebrow">Get in touch</p>
-    <h2>Let's talk about your site</h2>
-    <div class="contact-box">
-      <p>The easiest way to start is a quick message, tell me a bit about your business and what you're after.</p>
-      <div class="contact-grid">
-        <div><div class="label">Email</div><p><a href="mailto:pratham@aviangrove.com">pratham@aviangrove.com</a></p></div>
-        <div><div class="label">When you can reach me</div><p>Monday to Saturday, replies usually the same day.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <footer>Pratham Gupta &middot; <a href="https://aviangrove.com" target="_blank" rel="noopener">aviangrove.com</a></footer>
-</div>
+<footer>Last updated October 2026</footer>
 
 <script>
 (function () {
-  var canvas = document.getElementById('ripple');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var ctx = canvas.getContext('2d');
-  var w, h, dpr;
-  var ripples = [];
-  function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = canvas.width = innerWidth * dpr;
-    h = canvas.height = innerHeight * dpr;
-    canvas.style.width = innerWidth + 'px';
-    canvas.style.height = innerHeight + 'px';
+
+  // the nav underline follows whichever section is in view
+  var links = [].slice.call(document.querySelectorAll('.nav a'));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (l) { l.removeAttribute('aria-current'); });
+        var a = byId[e.target.id]; if (a) a.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    [].slice.call(document.querySelectorAll('main section[id]')).forEach(function (s) { spy.observe(s); });
   }
-  resize();
-  addEventListener('resize', resize);
-  var blobs = [];
-  for (var i = 0; i < 5; i++) {
-    blobs.push({ x: Math.random(), y: Math.random(), vx: (Math.random() - 0.5) * 0.0004, vy: (Math.random() - 0.5) * 0.0004, r: 0.35 + Math.random() * 0.3 });
+
+  // the one moment of motion: the results count up as they scroll into view
+  var figs = [].slice.call(document.querySelectorAll('.fig'));
+  function count(el) {
+    var to = +el.getAttribute('data-to'), suf = el.getAttribute('data-suffix') || '', t0 = null, dur = 1100;
+    function step(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + suf;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
-  var lastSpawn = 0;
-  function addRipple(x, y) {
-    ripples.push({ x: x * dpr, y: y * dpr, r: 0, max: (120 + Math.random() * 80) * dpr, a: 0.5 });
-    if (ripples.length > 24) ripples.shift();
-  }
-  if (!reduce) {
-    addEventListener('pointermove', function (e) {
-      var now = performance.now();
-      if (now - lastSpawn > 45) { addRipple(e.clientX, e.clientY); lastSpawn = now; }
+  if (!reduce && 'IntersectionObserver' in window) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target); count(e.target);
+      });
+    }, { threshold: 0.6 });
+    figs.forEach(function (f) {
+      f.setAttribute('aria-label', f.textContent);            // screen readers always get the real figure
+      f.textContent = '0' + (f.getAttribute('data-suffix') || '');
+      cio.observe(f);
     });
-    addEventListener('pointerdown', function (e) { addRipple(e.clientX, e.clientY); });
-  }
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#0E0A1A';
-    ctx.fillRect(0, 0, w, h);
-    for (var i = 0; i < blobs.length; i++) {
-      var b = blobs[i];
-      b.x += b.vx; b.y += b.vy;
-      if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
-      if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
-      var g = ctx.createRadialGradient(b.x * w, b.y * h, 0, b.x * w, b.y * h, b.r * w);
-      g.addColorStop(0, 'rgba(120, 80, 200, 0.16)');
-      g.addColorStop(1, 'rgba(120, 80, 200, 0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, w, h);
-    }
-    for (var j = ripples.length - 1; j >= 0; j--) {
-      var rp = ripples[j];
-      rp.r += 2.2 * dpr; rp.a *= 0.955;
-      if (rp.a < 0.01 || rp.r > rp.max) { ripples.splice(j, 1); continue; }
-      ctx.beginPath();
-      ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(163, 116, 255, ' + rp.a + ')';
-      ctx.lineWidth = 1.4 * dpr;
-      ctx.stroke();
-    }
-    requestAnimationFrame(draw);
-  }
-  if (reduce) {
-    ctx.fillStyle = '#0E0A1A'; ctx.fillRect(0, 0, w, h);
-    for (var k = 0; k < blobs.length; k++) {
-      var bb = blobs[k];
-      var gg = ctx.createRadialGradient(bb.x * w, bb.y * h, 0, bb.x * w, bb.y * h, bb.r * w);
-      gg.addColorStop(0, 'rgba(120, 80, 200, 0.14)');
-      gg.addColorStop(1, 'rgba(120, 80, 200, 0)');
-      ctx.fillStyle = gg; ctx.fillRect(0, 0, w, h);
-    }
-  } else { draw(); }
-})();
-</script>
-<script>
-(function () {
-  var root = document.documentElement;
-  var gate = document.getElementById('gate');
-  if (!gate) return;
-  if (!root.classList.contains('intro')) { gate.remove(); return; }
-
-  var NS = 'http://www.w3.org/2000/svg';
-  // build 8 bolts around the ring and 6 spokes with knobs on the wheel
-  var boltsG = document.getElementById('bolts');
-  for (var i = 0; i < 8; i++) {
-    var g = document.createElementNS(NS, 'g');
-    g.setAttribute('transform', 'rotate(' + (i * 45) + ' 100 100)');
-    var r = document.createElementNS(NS, 'rect');
-    r.setAttribute('class', 'bolt');
-    r.setAttribute('x', 94); r.setAttribute('y', -4); r.setAttribute('width', 12); r.setAttribute('height', 14); r.setAttribute('rx', 2);
-    g.appendChild(r); boltsG.appendChild(g);
-  }
-  var spokesG = document.getElementById('spokes');
-  for (var s = 0; s < 6; s++) {
-    var ang = s * 60 * Math.PI / 180;
-    var x2 = 100 + Math.sin(ang) * 62, y2 = 100 - Math.cos(ang) * 62;
-    var ln = document.createElementNS(NS, 'line');
-    ln.setAttribute('class', 'spoke');
-    ln.setAttribute('x1', 100); ln.setAttribute('y1', 100); ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
-    var kn = document.createElementNS(NS, 'circle');
-    kn.setAttribute('class', 'knob'); kn.setAttribute('cx', x2); kn.setAttribute('cy', y2); kn.setAttribute('r', 7);
-    spokesG.appendChild(ln); spokesG.appendChild(kn);
+    // printing or saving as PDF must never show a half-counted number
+    window.addEventListener('beforeprint', function () {
+      figs.forEach(function (f) { f.textContent = f.getAttribute('data-to') + (f.getAttribute('data-suffix') || ''); });
+    });
   }
 
-  var ring = document.getElementById('w-progress');
-  var wheel = document.getElementById('w-wheel');
-  var pct = document.getElementById('gate-pct');
-  var label = document.getElementById('gate-label');
-  var CIRC = 565.49, DURATION = 4000;
-  var start = null, opened = false, unlocked = false;
-
-  var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
-
-  function openGate() {
-    if (opened) return;
-    opened = true;
-    if (!unlocked) { gate.classList.add('unlocked'); label.textContent = 'Unlocked'; }
-    pct.textContent = '100';
-    ring.style.strokeDashoffset = 0;
-    root.classList.remove('intro');           // header text starts fading in
-    gate.classList.add('open');               // doors slide apart
-    setTimeout(function () {
-      root.classList.remove('intro-lock');    // restore scrolling
-      gate.remove();
-    }, 1700);
+  // copy email
+  var btn = document.getElementById('copy-email');
+  var email = 'prathamgupta8208.12e@gmail.com';
+  function fallback() {
+    var t = document.createElement('textarea'); t.value = email; t.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(t); t.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(t); return ok;
   }
-
-  function frame(now) {
-    if (opened) return;
-    if (start === null) start = now;
-    var t = Math.min((now - start) / DURATION, 1);
-    ring.style.strokeDashoffset = CIRC * (1 - t);
-    wheel.style.transform = 'rotate(' + (easeOut(t) * 720) + 'deg)';
-    pct.textContent = Math.round(t * 100);
-    if (t >= 0.9 && !unlocked) {
-      unlocked = true;
-      gate.classList.add('unlocked');
-      label.textContent = 'Unlocked';
-    }
-    if (t < 1) requestAnimationFrame(frame);
-    else setTimeout(openGate, 250);           // brief beat on "unlocked" before the doors move
-  }
-  requestAnimationFrame(frame);
-
-  gate.addEventListener('click', openGate);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Enter') openGate(); });
-  setTimeout(openGate, DURATION + 3000);      // safety net if frames are throttled
+  btn.addEventListener('click', function () {
+    var done = function (ok) {
+      btn.textContent = ok ? 'Email copied' : 'Press Ctrl+C to copy';
+      setTimeout(function () { btn.textContent = 'Copy email'; }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(email).then(function () { done(true); }, function () { done(fallback()); });
+    else done(fallback());
+  });
 })();
 </script>
 </body>
