@@ -1402,18 +1402,61 @@
     pre.style.fontSize = fs + 'px'; pre.style.lineHeight = (adv * ASP) + 'px';
     pre.style.width = (adv * trace.cols) + 'px'; pre.style.height = (adv * ASP * trace.rows) + 'px';
   }
+  // The man on the left is replaced by YOU. Boundary = how far across each frame (0..1) his figure reaches.
+  var YOUB = [0.52, 0.56, 0.62, 0.62, 0.60, 0.60, 0.56,  0.55, 0.58, 0.64,  0.36, 0.28, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.27, 0.26, 0.26,  0.47, 0.47, 0.47, 0.47, 0.47, 0.47, 0.47,  0.50, 0.50, 0.50, 0.50, 0.52, 0.52, 0.52];
+  var SHOT = [0, 0, 0, 0, 0, 0, 0,  1, 1, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,  3, 3, 3, 3, 3, 3, 3,  4, 4, 4, 4, 4, 4, 4];
+  var SHOT_FIRST = [0, 7, 10, 21, 28], SHOT_MIN = [];
+  (function () { for (var k = 0; k < 5; k++) SHOT_MIN[k] = 1; YOUB.forEach(function (b, f) { if (b < SHOT_MIN[SHOT[f]]) SHOT_MIN[SHOT[f]] = b; }); })();
+  var GLYPH = {
+    Y: ['1100011', '1100011', '0110110', '0011100', '0011100', '0011100', '0011100'],
+    O: ['0111110', '1100011', '1100011', '1100011', '1100011', '1100011', '0111110'],
+    U: ['1100011', '1100011', '1100011', '1100011', '1100011', '1100011', '0111110']
+  };
+  function youBox(cols, rows, shot) {
+    var boxw = Math.max(12, Math.floor(SHOT_MIN[shot] * cols) - 5), gap = Math.max(1, Math.round(boxw * 0.06));
+    var wl = Math.max(3, Math.floor((boxw - 2 * gap) / 3)), h = Math.min(Math.round(rows * 0.62), Math.round(wl * 2.4));
+    var total = 3 * wl + 2 * gap;
+    return { x0: 2 + Math.floor((boxw - total) / 2), wl: wl, gap: gap, h: h, top: Math.floor((rows - h) / 2) - 1, total: total };
+  }
   function traceFrame(T) {
     var ms = T * 1000, fi = 0, rows = trace.rows, cols = trace.cols;
     if (ms >= TOTAL) fi = trace.n - 1; else for (var i = 0; i < START.length; i++) if (ms >= START[i]) fi = i;
-    var lines = trace.frames.slice(fi * rows, fi * rows + rows);
+    var lines = trace.frames.slice(fi * rows, fi * rows + rows), shot = SHOT[fi];
+
+    // 1. blank the man on the left
+    var b = Math.round(YOUB[fi] * cols), pad = new Array(b + 1).join(' ');
+    for (var r0 = 0; r0 < rows; r0++) lines[r0] = pad + lines[r0].slice(b);
+
+    // 2. draw YOU, big, in the space he left; it types in at the start of every shot, like a film cut
+    var sinceImpact = ms - START[12], flash = sinceImpact >= 0 && sinceImpact < 150 ? 1 - sinceImpact / 150 : 0;
+    var box = youBox(cols, rows, shot), shotMs = ms - START[SHOT_FIRST[shot]];
+    var reveal = Math.min(1, shotMs / (shot === 0 ? 520 : 170)), limit = box.x0 + box.total * reveal;
+    var ov = [];
+    'YOU'.split('').forEach(function (ch, li) {
+      var g = GLYPH[ch], lx = box.x0 + li * (box.wl + box.gap);
+      for (var r = 0; r < box.h; r++) for (var c = 0; c < box.wl; c++) {
+        if (g[Math.floor(r * 7 / box.h)].charAt(Math.floor(c * 7 / box.wl)) !== '1') continue;
+        var x = lx + c; if (x > limit || x >= cols) continue;
+        var row = box.top + r; if (row < 0 || row >= rows) continue;
+        (ov[row] = ov[row] || [])[x] = (flash > 0.2 || (x + r + Math.floor(ms / 90)) % 9 === 0) ? '@' : '#';
+      }
+    });
+    for (var r1 = 0; r1 < rows; r1++) if (ov[r1]) {
+      var L = lines[r1].split('');
+      for (var x1 = 0; x1 < cols; x1++) if (ov[r1][x1]) L[x1] = ov[r1][x1];
+      lines[r1] = L.join('');
+    }
     function put(r, c, str) { if (r < 0 || r >= rows) return; var L = lines[r]; lines[r] = L.slice(0, c) + str + L.slice(c + str.length); }
+    if (shot === 4 && reveal >= 1) { var yes = 'YOU SAID YES'; put(Math.min(rows - 2, box.top + box.h + 2), box.x0 + Math.floor((box.total - yes.length) / 2), yes); }
+
+    // 3. HUD
     var tc = Math.min(TOTAL, ms), sec = Math.floor(tc / 1000), ff = Math.floor((tc % 1000) / 100);
     put(0, 1, (Math.floor(ms / 400) % 2 === 0 && ms < TOTAL ? '(*) REC' : '    REC'));
     var stamp = 'TC 00:0' + sec + ':' + ff + '0'; put(0, cols - stamp.length - 1, stamp);
+    var me = 'P1 PRATHAM'; put(2, cols - me.length - 1, me);
     put(rows - 1, 1, 'PRATHAM.SYS // AUTOMATION EXPERT');
-    var sinceImpact = ms - START[12], flash = sinceImpact >= 0 && sinceImpact < 150 ? 1 - sinceImpact / 150 : 0;
     var done = ms >= TOTAL;
-    if (done && Math.floor(T * 2.4) % 2 === 0) { var m = '-- DEAL --'; put(rows - 4, Math.floor((cols - m.length) / 2), m); }
+    if (done && Math.floor(T * 2.4) % 2 === 0) { var m = '-- DEAL --'; put(rows - 4, Math.floor((cols - m.length) / 2) + Math.floor(b / 2), m); }
     pre.textContent = lines.join('\n');
     pre.classList.toggle('flash', flash > 0.25);
     var shake = sinceImpact >= 0 && sinceImpact < 450 ? 5 * (1 - sinceImpact / 450) : (done ? 0.7 : 0);
