@@ -238,6 +238,13 @@
   .neterr .ne-note { margin-top: 30px; font-size: 12.5px; color: #6F7378; line-height: 1.5; }
   #tiles { display: none; position: fixed; inset: 0; z-index: 8; pointer-events: none; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(8, 1fr); }
   #tiles.on { display: grid; }
+  #tiles { opacity: 0; transition: opacity 0.45s ease; }
+  #tiles.in { opacity: 1; }
+  #tiles div { will-change: transform; }
+  html.hush .ticker-track, html.hush .crt, html.hush .flow-steps li, html.hush .chev, html.hush .tag i, html.hush .car-swipe i,
+  html.crashing .ticker-track, html.crashing .crt, html.crashing .flow-steps li, html.crashing .chev, html.crashing .tag i, html.crashing .car-swipe i { animation: none !important; }
+  html.crashing .fx::before { display: none; }
+  html.crashing, html.crashing * { scroll-behavior: auto !important; }
   #tiles div { background: #0E0A1A; box-shadow: inset 0 0 0 1px rgba(163, 116, 255, 0.1); }
   #cracks { position: fixed; inset: 0; z-index: 9000; pointer-events: none; width: 100%; height: 100%; }
   .debris { position: fixed; z-index: 9; pointer-events: none; }
@@ -943,7 +950,7 @@
     });
   }
   function draw() {
-    if (document.documentElement.classList.contains('crashing')) { requestAnimationFrame(draw); return; }
+    if (document.documentElement.classList.contains('crashing') || document.documentElement.classList.contains('hush')) { requestAnimationFrame(draw); return; }
     ctx.fillStyle = '#0E0A1A'; ctx.fillRect(0, 0, w, h);
     blobs.forEach(function (b) {
       b.x += b.vx; b.y += b.vy;
@@ -1525,66 +1532,114 @@
     await startHandshake();
   }
 
-  /* ----- NO: the site crumbles and a PHP fatal error is underneath ----- */
-  var FRAG = '.car-ui,.acc,.acc-bar,.lab-card,.proj .logo,.vault-list li,.flow,.flow-steps li,.top,.top .brand,.top .nav a,.top .btn,.tag,h1,.lede,.hero .cta .btn,.record,.record dl>div,.ticker,.sec>.eyebrow,.sec>h2,.stats,.stat,.cells,.cell,.job,.job li,.proj,.proj p,.edu,.contact,.contact-lines li,.mail-big,.contact .cta .btn,.crt,.crt-bar,.crt-body,footer';
-  var anims = [], debris = [];
-  function addAnim(el, dur, delay, dx, rot, dy) {
+  /* ----- NO: the site crumbles and a browser-style error page is underneath ----- */
+  var FRAG = '.car-ui,.acc,.acc-bar,.lab-card,.proj .logo,.vault-list li,.flow,.flow-steps li,.top,.top .brand,.top .nav a,.top .btn,.tag,h1,.lede,.hero .cta .btn,.record,.record dl>div,.ticker,.sec>p,.sec>h2,.stats,.stat,.cells,.cell,.job,.job li,.proj,.proj p,.edu,.contact,.contact-lines li,.mail-big,.contact .cta .btn,.crt,.crt-bar,.crt-body,footer';
+  var anims = [], debris = [], touched = [];
+  var FALL_EASE = 'cubic-bezier(0.55, 0.05, 0.9, 0.5)';
+
+  // one falling piece. will-change puts it on its own layer so the browser can animate it off the main thread
+  function fall(el, dur, delay, dx, rot, dy) {
+    el.style.willChange = 'transform'; touched.push(el);
     var a = el.animate([
-      { transform: 'translate(0px,0px) rotate(0deg)', offset: 0 },
-      { transform: 'translate(' + (dx * 0.04) + 'px,3px) rotate(' + (rot * 0.03) + 'deg)', offset: 0.1 },
-      { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)', offset: 1 }
-    ], { duration: dur, delay: delay, easing: 'cubic-bezier(0.55, 0.05, 0.9, 0.5)', fill: 'forwards' });
-    anims.push(a); return a;
+      { transform: 'translate3d(0,0,0) rotate(0deg)' },
+      { transform: 'translate3d(' + (dx * 0.03) + 'px,2px,0) rotate(' + (rot * 0.02) + 'deg)', offset: 0.08 },
+      { transform: 'translate3d(' + dx + 'px,' + dy + 'px,0) rotate(' + rot + 'deg)' }
+    ], { duration: dur, delay: delay, easing: FALL_EASE, fill: 'forwards' });
+    anims.push(a); return a.finished;
   }
-  function makeCracks() {
-    var vw = innerWidth, vh = innerHeight, cx = vw * (0.35 + Math.random() * 0.3), cy = vh * (0.4 + Math.random() * 0.3), svg = '';
+  function makeCracks(vw, vh) {
+    var cx = vw * (0.35 + Math.random() * 0.3), cy = vh * (0.4 + Math.random() * 0.3), svg = '';
     for (var i = 0; i < 9; i++) {
       var a = (i / 9) * Math.PI * 2 + Math.random() * 0.5, x = cx, y = cy, d = 'M' + x + ' ' + y;
       for (var s = 0; s < 7; s++) { var L = 40 + Math.random() * 90; a += (Math.random() - 0.5) * 0.7; x += Math.cos(a) * L; y += Math.sin(a) * L; d += ' L' + x.toFixed(0) + ' ' + y.toFixed(0); }
       svg += '<path d="' + d + '" fill="none" stroke="#fff" stroke-width="' + (1 + Math.random() * 2) + '" stroke-linecap="round" opacity="0.9" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="0.28s" begin="' + (Math.random() * 0.15).toFixed(2) + 's" fill="freeze"/></path>';
     }
     cracks.innerHTML = '<g style="filter:drop-shadow(0 0 6px #A374FF)">' + svg + '</g>';
-    cracks.style.opacity = 1;
+    cracks.style.transition = 'none'; cracks.style.opacity = 1;
+    return { cx: cx, cy: cy };
+  }
+  var plan = null;
+  function prepareCrash() {
+    var vh = innerHeight, vw = innerWidth, cands = [];
+    [].slice.call(document.querySelectorAll(FRAG)).forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0 && r.bottom > -vh * 0.2 && r.top < vh * 1.2 && r.right > 0 && r.left < vw) { el.style.willChange = 'transform'; touched.push(el); cands.push(el); }
+    });
+    var frag = document.createDocumentFragment(); tiles.innerHTML = '';
+    for (var i = 0; i < 96; i++) frag.appendChild(document.createElement('div'));
+    tiles.appendChild(frag);
+    plan = { cands: cands };
   }
   async function no() {
     var tok = ++session; state = 'no'; menu.hidden = true; hint.hidden = true;
+    root.classList.add('hush');
     live.textContent = 'You said no. As a joke, the site is about to crumble and show an error page. Press Reboot to restore it.';
     await typeLine(out, '\n> YOU SAID: NO', tok, 28);
     await typeLine(out, '> ERROR: UNHANDLED ANSWER', tok, 22);
     await typeLine(out, '> SEGMENTATION FAULT (core dumped)', tok, 22);
+    if (tok !== session) return;
+    if (!reduce) prepareCrash();
     await sleep(500); if (tok !== session) return;
     crash();
   }
   async function crash() {
     state = 'crashing';
+    var vw = innerWidth, vh = innerHeight;
+    // locking the scroll removes the scrollbar; hold its width as padding so nothing re-centres
+    var sbw = vw - root.clientWidth; if (sbw > 0) root.style.paddingRight = sbw + 'px';
     root.classList.add('crashing');
-    var vh = innerHeight;
     if (reduce) { neterr.classList.add('on'); neterr.setAttribute('aria-hidden', 'false'); root.classList.add('crashed'); state = 'crashed'; return; }
-    makeCracks();
-    document.getElementById('content').animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-9px,5px)' }, { transform: 'translate(8px,-6px)' }, { transform: 'translate(-6px,4px)' }, { transform: 'translate(0,0)' }], { duration: 480 });
-    await sleep(520);
-    cracks.style.transition = 'opacity 0.5s ease'; cracks.style.opacity = 0;
-    neterr.classList.add('on'); neterr.setAttribute('aria-hidden', 'false'); tiles.classList.add('on');
-    anims = []; tiles.innerHTML = '';
-    for (var i = 0; i < 96; i++) tiles.appendChild(document.createElement('div'));
-    [].slice.call(tiles.children).forEach(function (t, i) {
-      addAnim(t, 900 + Math.random() * 1000, Math.random() * 1500 + Math.floor(i / 12) * 25, (Math.random() - 0.5) * 140, (Math.random() - 0.5) * 70, vh * 1.5);
+
+    // ---- READ: measure once, and only what can be seen ----
+    var onScreen = function (r) { return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw; };
+    var items = [], cands = plan ? plan.cands : [].slice.call(document.querySelectorAll(FRAG));
+    cands.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (onScreen(r)) items.push({ el: el, r: r, big: r.width * r.height > 50000 });
     });
-    var els = [].slice.call(document.querySelectorAll(FRAG));
-    els.forEach(function (el) {
-      var r = el.getBoundingClientRect(), area = r.width * r.height, big = area > 50000;
-      addAnim(el, 1000 + Math.random() * 1100, Math.random() * 1200 + (big ? 380 : 0), (Math.random() - 0.5) * 170, (Math.random() - 0.5) * (big ? 14 : 80), vh * 1.7);
-      if (r.bottom > 0 && r.top < vh && r.width > 0) {
-        for (var k = 0; k < (big ? 4 : 2); k++) {
-          var d = document.createElement('div'), s = 6 + Math.random() * 14;
-          d.className = 'debris';
-          d.style.cssText = 'left:' + (r.left + Math.random() * r.width) + 'px;top:' + (Math.max(0, r.top) + Math.random() * Math.min(r.height, vh)) + 'px;width:' + s + 'px;height:' + s * (0.5 + Math.random()) + 'px;background:' + ['#A374FF', '#C4A3FF', '#F4F1FB', '#3a2a66'][Math.floor(Math.random() * 4)];
-          document.body.appendChild(d); debris.push(d);
-          d.animate([{ transform: 'translate(0,0) rotate(0)', opacity: 1 }, { transform: 'translate(' + ((Math.random() - 0.5) * 240) + 'px,' + (vh * 1.3) + 'px) rotate(' + (Math.random() * 540) + 'deg)', opacity: 1 }], { duration: 900 + Math.random() * 1100, delay: Math.random() * 1300, easing: 'cubic-bezier(0.5, 0.05, 0.9, 0.5)', fill: 'forwards' });
-        }
+    var shakers = [].slice.call(document.querySelectorAll('.hero,.sec,.ticker,.top')).filter(function (el) { return onScreen(el.getBoundingClientRect()); });
+
+    // ---- WRITE: nothing below reads layout again ----
+    var c = makeCracks(vw, vh);
+    // the dark tiles and the error page slide in underneath while the cracks draw, so nothing pops
+    if (tiles.children.length !== 96) { var frag = document.createDocumentFragment(); tiles.innerHTML = ''; for (var i = 0; i < 96; i++) frag.appendChild(document.createElement('div')); tiles.appendChild(frag); }
+    neterr.classList.add('on'); neterr.setAttribute('aria-hidden', 'false'); tiles.classList.add('on');
+    void tiles.offsetWidth; tiles.classList.add('in');
+    items.forEach(function (it) { it.el.style.willChange = 'transform'; touched.push(it.el); });
+    // the shake goes to the few visible blocks, not the whole tall page
+    shakers.forEach(function (el) {
+      el.animate([{ transform: 'translate3d(0,0,0)' }, { transform: 'translate3d(-8px,4px,0)' }, { transform: 'translate3d(7px,-5px,0)' }, { transform: 'translate3d(-5px,3px,0)' }, { transform: 'translate3d(0,0,0)' }], { duration: 460, easing: 'ease-out' });
+    });
+    await sleep(520); if (state !== 'crashing') return;
+
+    cracks.style.transition = 'opacity 0.5s ease'; cracks.style.opacity = 0;
+    // pieces fall outward from the crack, nearest first, so it reads as one collapse instead of random pops
+    var maxD = Math.hypot(vw, vh), done = [];
+    [].slice.call(tiles.children).forEach(function (t, i) {
+      var tx = ((i % 12) + 0.5) / 12 * vw, ty = (Math.floor(i / 12) + 0.5) / 8 * vh, d = Math.hypot(tx - c.cx, ty - c.cy) / maxD;
+      done.push(fall(t, 800 + Math.random() * 450, d * 950 + Math.random() * 150, (Math.random() - 0.5) * 120, (Math.random() - 0.5) * 50, vh * 1.5));
+    });
+    items.forEach(function (it) {
+      var d = Math.hypot(it.r.left + it.r.width / 2 - c.cx, it.r.top + it.r.height / 2 - c.cy) / maxD;
+      done.push(fall(it.el, 800 + Math.random() * 550, d * 950 + (it.big ? 200 : 0) + Math.random() * 150, (Math.random() - 0.5) * 150, (Math.random() - 0.5) * (it.big ? 12 : 60), vh * 1.5));
+    });
+    // a modest handful of shards, created in one go
+    var shards = document.createDocumentFragment(), made = 0, colours = ['#A374FF', '#C4A3FF', '#F4F1FB', '#3a2a66'];
+    items.forEach(function (it) {
+      if (!it.big || made >= 30) return;
+      for (var k = 0; k < 3 && made < 30; k++, made++) {
+        var d = document.createElement('div'), sz = 6 + Math.random() * 12, dd = Math.hypot(it.r.left + it.r.width / 2 - c.cx, it.r.top + it.r.height / 2 - c.cy) / maxD;
+        d.className = 'debris';
+        d.style.cssText = 'left:' + (it.r.left + Math.random() * it.r.width) + 'px;top:' + (Math.max(0, it.r.top) + Math.random() * Math.min(it.r.height, vh)) + 'px;width:' + sz + 'px;height:' + sz * (0.5 + Math.random()) + 'px;background:' + colours[Math.floor(Math.random() * 4)] + ';will-change:transform';
+        shards.appendChild(d); debris.push(d);
+        done.push(d.animate([{ transform: 'translate3d(0,0,0) rotate(0deg)' }, { transform: 'translate3d(' + ((Math.random() - 0.5) * 240) + 'px,' + (vh * 1.2) + 'px,0) rotate(' + (Math.random() * 540) + 'deg)' }],
+          { duration: 800 + Math.random() * 700, delay: dd * 900 + Math.random() * 200, easing: FALL_EASE, fill: 'forwards' }).finished);
       }
     });
-    await sleep(3300);
+    document.body.appendChild(shards);
+
+    // cut to the error page only once the last piece has actually landed
+    await Promise.all(done.map(function (p) { return p.catch(function () {}); }));
     if (state !== 'crashing') return;
     debris.forEach(function (d) { d.remove(); }); debris = [];
     root.classList.add('crashed'); state = 'crashed';
@@ -1595,16 +1650,18 @@
     state = 'rebooting';
     root.classList.remove('crashed');
     debris.forEach(function (d) { d.remove(); }); debris = [];
-    if (!reduce) {
-      anims.forEach(function (a) { a.playbackRate = -1.8; a.play(); });
+    if (!reduce && anims.length) {
+      anims.forEach(function (a) { a.playbackRate = -2; a.play(); });
       await Promise.all(anims.map(function (a) { return a.finished.catch(function () {}); }));
     }
     anims.forEach(function (a) { a.cancel(); }); anims = [];
-    tiles.classList.remove('on'); tiles.innerHTML = ''; neterr.classList.remove('on'); neterr.setAttribute('aria-hidden', 'true');
-    cracks.innerHTML = ''; root.classList.remove('crashing');
-    section.scrollIntoView({ block: 'center' });
+    touched.forEach(function (el) { el.style.willChange = ''; }); touched = [];
+    tiles.classList.remove('on', 'in'); tiles.innerHTML = ''; neterr.classList.remove('on'); neterr.setAttribute('aria-hidden', 'true');
+    cracks.innerHTML = ''; root.classList.remove('crashing', 'hush'); root.style.paddingRight = ''; plan = null;
+    section.scrollIntoView({ block: 'center', behavior: 'instant' });
     if (then === 'yes') { state = 'asking'; inView = true; yes(); } else { boot(); }
   }
+
   document.getElementById('err-diag').addEventListener('click', function (e) { e.preventDefault(); reboot('yes'); });
   document.getElementById('err-reload').addEventListener('click', function () { reboot('ask'); });
   document.addEventListener('keydown', function (e) { if (state === 'crashed' && (e.key.toLowerCase() === 'r' || e.key === 'Escape')) reboot('ask'); });
