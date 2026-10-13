@@ -1524,8 +1524,10 @@
   var legF = leg(false), armF = arm(false);
   var thumb = mk('g', { opacity: 0 }, armF.lo);
   mk('circle', { cx: 0, cy: FORE, r: 2.4, fill: INK }, thumb); ln(thumb, 0.5, FORE + 0.5, 1.2, FORE + 4.8, { 'stroke-width': 2.4 });
+  var defs = mk('defs', {}, svg), clip = mk('clipPath', { id: 'plugClip', clipPathUnits: 'userSpaceOnUse' }, defs), clipRect = mk('rect', { x: -20, y: -60, width: 40, height: 200 }, clip);
   var plug = mk('g', {}, svg);                                                          // the plug goes straight into the letter: no socket
-  ln(plug, -2.5, -3.6, -2.5, -7.8, { 'stroke-width': 1.8, 'vector-effect': 'none' }); ln(plug, 2.5, -3.6, 2.5, -7.8, { 'stroke-width': 1.8, 'vector-effect': 'none' });
+  var prongs = mk('g', { 'clip-path': 'url(#plugClip)' }, plug);                        // the letter hides whatever of the prongs is inside it
+  ln(prongs, -2.5, -3.6, -2.5, -7.8, { 'stroke-width': 1.8, 'vector-effect': 'none' }); ln(prongs, 2.5, -3.6, 2.5, -7.8, { 'stroke-width': 1.8, 'vector-effect': 'none' });
   mk('rect', { x: -5, y: -3.6, width: 10, height: 7.4, rx: 2, fill: INK }, plug);
   var spark = mk('g', { opacity: 0 }, svg);
   for (var i = 0; i < 8; i++) { var an = i * Math.PI / 4 + 0.2; ln(spark, Math.cos(an) * 5, Math.sin(an) * 5, Math.cos(an) * (i % 2 ? 9 : 12), Math.sin(an) * (i % 2 ? 9 : 12), { stroke: '#D9C6FF', 'stroke-width': 2, 'vector-effect': 'none' }); }
@@ -1567,7 +1569,7 @@
     var LH = parseFloat(getComputedStyle(word.parentNode).lineHeight) || fs * 1.08;
     G.sx = lr.left - cr.left + lr.width / 2;                                             // the stem of the letter "l"
     G.baseY = lr.top - cr.top + fA;                                                      // the baseline of "replies"
-    G.plugY = G.baseY + 6.3;                                                             // prongs just inside the foot of the letter
+    G.plugY = G.baseY + 3.3;                                                             // the plug body sits flush against the foot of the letter; its prongs are inside it
     G.floor = G.plugY + 45.5; G.xStop = G.sx - 11; G.x0 = -cr.left - 46; G.ax = G.x0 - 60; G.xExit = G.x0 - 30; G.w = col.offsetWidth;
     // the gap that is left once he has gone: the wire runs along the middle of it, clear of both lines of text
     var inkBottom2 = G.baseY + descP, gap = (G.baseY + LH + END_MARGIN - ascB) - inkBottom2, endMargin = END_MARGIN;
@@ -1601,7 +1603,7 @@
 
     var swing = 18 * D2R * walkAmt * Math.sin(phase + Math.PI);
     var carry = [CARRY[0] + 5 * D2R * walkAmt * Math.sin(phase + Math.PI), CARRY[1]];
-    var tgtX = G.sx - G.xStop, pre = ik(0, SHY, tgtX, G.plugY + 3 - G.floor), ins = ik(0, SHY, tgtX, G.plugY - G.floor);
+    var tgtX = G.sx - G.xStop, pre = ik(0, SHY, tgtX, G.plugY + 4.2 - G.floor), ins = ik(0, SHY, tgtX, G.plugY - G.floor);
     var arm1 = carry;
     if (t >= T.raise0) { var r = ease((t - T.raise0) / T.raise), dip = Math.sin(clamp((t - T.raise0) / 0.14, 0, 1) * Math.PI) * 4 * D2R; arm1 = [carry[0] + wrap(pre[0] - carry[0]) * r - dip * (1 - r), carry[1] + wrap(pre[1] - carry[1]) * r]; }
     if (t >= T.ins) arm1 = blend(pre, ins, ease((t - T.ins) / T.push));
@@ -1636,6 +1638,7 @@
     rot(armB.up, S.armB[0] / D2R, 0, SHY); rot(armB.lo, S.armB[1] / D2R, 0, UP);
     rot(head, S.tilt, 0, -41.7); thumb.setAttribute('opacity', S.thumb.toFixed(3));
     plug.setAttribute('transform', 'translate(' + S.px.toFixed(2) + ' ' + S.py.toFixed(2) + ')');
+    clipRect.setAttribute('y', (G.baseY - S.py).toFixed(2));                             // prongs are only drawn below the baseline
     var ax = G.ax, ay = S.fl, ex = S.px, ey = S.py + 4.4, rise = ay - ey, away = 6 + 20 * easeOut((S.t - (T.contact - 0.15)) / 0.5);
     cable.setAttribute('d', 'M' + ax.toFixed(1) + ' ' + ay.toFixed(1) + ' C' + (ax + (ex - ax) * 0.62).toFixed(1) + ' ' + (ay + 0.5).toFixed(1) + ' ' + (ex - away).toFixed(1) + ' ' + (ey + rise * 0.5).toFixed(1) + ' ' + ex.toFixed(1) + ' ' + ey.toFixed(1));
     ground.setAttribute('opacity', S.ground.toFixed(3));
