@@ -561,6 +561,16 @@
   }
   @media (prefers-reduced-motion: reduce) { .fx-toggle { display: none; } }
 
+
+  /* ---------- hand-made figures ---------- */
+  .sketch { margin: 0 0 18px; }
+  .sketch .sk { display: block; width: 100%; height: auto; aspect-ratio: 480 / 200; border-radius: 6px; border: 1px solid rgba(242, 234, 223, 0.1); background: #131316; }
+  .shotwrap { position: relative; overflow: hidden; border-radius: 6px; border: 1px solid rgba(242, 234, 223, 0.12); background: #fff; }
+  .shotwrap img { position: absolute; left: 0; top: 0; width: 100%; height: auto; display: block; }
+  .shotwrap .mark { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .sketch figcaption { margin-top: 8px; font-size: 12px; color: var(--muted); letter-spacing: 0.02em; }
+  @media print { .sketch { display: none !important; } }
+
   /* ---------- books ---------- */
   .book { position: relative; margin: 8px 0 4px; }
   .book-stage { position: relative; perspective: 2600px; perspective-origin: 50% 35%; touch-action: pan-y; }
@@ -635,6 +645,7 @@
   .bk-sr:disabled { opacity: 0.35; }
   .book:focus-visible { outline: 2px solid rgba(163, 116, 255, 0.55); outline-offset: 10px; border-radius: 10px; }
   .book-stage { cursor: grab; }
+  .pg img, .bk-leaf img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
   .bk-finger { position: absolute; width: 50px; height: 50px; margin: -25px 0 0 -25px; border-radius: 50%; pointer-events: none; z-index: 30; opacity: 0; background: radial-gradient(circle, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.24) 58%, rgba(255, 255, 255, 0) 72%); border: 2px solid rgba(255, 255, 255, 0.6); box-shadow: 0 0 22px rgba(163, 116, 255, 0.7), 0 6px 14px rgba(0, 0, 0, 0.5); }
   @media print { .bk-foot { display: none !important; } }
 
@@ -807,36 +818,54 @@
     <p class="lead-note">Find the one that sounds like yours. Each one comes with proof of where I have already done it.</p>
     <div class="solve-grid" data-book="Problems I solve">
       <article class="solve frame fx">
+<figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/s1-ignored.svg" width="480" height="200" alt="Hand-drawn sketch: a pile of identical emails crossed out, next to one letter with a single real detail highlighted and a reply coming back."></figure>
+
+
         <h3>Cold emails get ignored</h3>
         <div class="sl"><b class="lab">What I do</b><p>I research each prospect, write a message that mentions something real about them, send it from the right mailbox and follow up on a schedule.</p></div>
         <div class="sl"><b class="lab">What you get</b><p>More of the right people replying, with every conversation logged in one place.</p></div>
         <p class="proof">20% response rate across 50+ prospects a month. Employer work, Avian Grove.</p>
       </article>
       <article class="solve frame fx">
+<figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/s2-places.svg" width="480" height="200" alt="Hand-drawn sketch: ten scattered notes on the left, and one pipeline with four columns (new, sent, replied, won) on the right."></figure>
+
+
         <h3>Leads live in ten different places</h3>
         <div class="sl"><b class="lab">What I do</b><p>I set up a CRM around how you actually sell, then keep leads, follow-ups and conversions tidy.</p></div>
         <div class="sl"><b class="lab">What you get</b><p>Nothing slips through the gaps, and you can see what each campaign produced.</p></div>
         <p class="proof">Set up the first CRM workflows and managed the pipeline. Employer work, Avian Grove.</p>
       </article>
       <article class="solve frame fx">
+<figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/s3-week.svg" width="480" height="200" alt="Hand-drawn sketch: a work week with four days hatched out by finding leads, then a find, check, hand over flow that ends with a person stepping in."></figure>
+
+
         <h3>Finding leads eats the week</h3>
         <div class="sl"><b class="lab">What I do</b><p>I connect your lead sources, spreadsheets and CRM into one workflow that finds, checks and hands over leads.</p></div>
         <div class="sl"><b class="lab">What you get</b><p>A repeatable lead flow where people only step in for the conversation.</p></div>
         <p class="proof">Built the groundwork for an automated lead process for a new market. Employer work, Sphinx Worldbiz.</p>
       </article>
       <article class="solve frame fx">
+<figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/s4-spam.svg" width="480" height="200" alt="Hand-drawn sketch: an envelope with SPF, DKIM and DMARC checked, three mailboxes each with a daily cap, and everything arriving in the inbox."></figure>
+
+
         <h3>Emails land in spam</h3>
         <div class="sl"><b class="lab">What I do</b><p>I check your sender setup (SPF, DKIM, DMARC), spread sending across mailboxes under daily caps, and spot wording that trips filters.</p></div>
         <div class="sl"><b class="lab">What you get</b><p>Fewer emails in spam and a safer sending routine.</p></div>
         <p class="proof">Built a mailbox-rotation tool and an audit that checks SPF and DMARC. Self-initiated.</p>
       </article>
       <article class="solve frame fx">
+<figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/s5-audit.svg" width="480" height="200" alt="Hand-drawn sketch: a web page, and a checklist of platform, security, findability and trust signals, with a grade for the type of business."></figure>
+
+
         <h3>Nobody can say what is wrong with the website</h3>
         <div class="sl"><b class="lab">What I do</b><p>I audit what a visitor and a search engine actually see: platform, security, findability and trust signals, graded for your type of business.</p></div>
         <div class="sl"><b class="lab">What you get</b><p>A short, prioritised list of fixes in plain language.</p></div>
         <p class="proof">Built Site Auditor, which recognises 48 platforms and tools. Self-initiated.</p>
       </article>
       <article class="solve frame fx">
+<figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/s6-small.svg" width="480" height="200" alt="Hand-drawn sketch: a crossed-out agency building, or three small tools (an extension, a script and an app), one job each."></figure>
+
+
         <h3>You need a small tool, not an agency project</h3>
         <div class="sl"><b class="lab">What I do</b><p>I build lightweight tools, such as Chrome extensions, browser tools, scripts and Android apps, using AI to move fast and testing on real data.</p></div>
         <div class="sl"><b class="lab">What you get</b><p>Something that works and does one job well, without agency pricing.</p></div>
@@ -881,7 +910,8 @@
       <div class="case-sub" data-book="The two tools inside it">
         <article class="proj frame fx tilt">
           <div class="proj-head"><img class="logo" src="logos/site-auditor.png" width="52" height="52" alt="" loading="lazy"><div><p class="kind">Chrome extension</p><h3>Site Auditor</h3></div></div>
-          <p>One-click audit of any website, built to find specific, checkable gaps instead of a generic score. It detects 48 platforms and tools, checks security headers, exposed files and email authentication records (SPF and DMARC), and grades findings by business type so a bakery is not marked down for lacking a checkout. Exports JSON for an LLM and a Markdown report for people.</p>
+          <figure class="sketch"><div class="shotwrap" style="aspect-ratio:520/300"><img loading="lazy" decoding="async" src="media/site-auditor.webp" alt="The Site Auditor extension showing a grade, the detected technologies and findability findings, with hand-drawn notes." style="transform:translateY(-8.5%)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" class="mark" aria-hidden="true"><text x="122" y="22" font-family="'Atkinson Hyperlegible Next','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="0.2" fill="#5b2fd9" text-anchor="start" opacity="1">graded for the type</text><text x="122" y="41" font-family="'Atkinson Hyperlegible Next','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="0.2" fill="#5b2fd9" text-anchor="start" opacity="1">of business</text><path d="M65.5 130.0Q58.3 128.9 54.6 128.4Q51.0 127.9 47.9 125.9Q44.7 124.0 41.8 121.8Q38.9 119.5 36.2 116.9Q33.5 114.3 32.1 110.9Q30.6 107.4 29.3 103.9Q27.9 100.3 27.7 96.5Q27.5 92.7 28.3 89.0Q29.1 85.2 30.4 81.7Q31.8 78.2 34.0 75.0Q36.1 71.9 38.9 69.4Q41.8 67.0 44.7 64.5Q47.7 62.0 51.3 61.0Q55.0 59.9 58.7 58.9Q62.5 57.9 66.4 58.0Q70.2 58.2 73.7 59.9Q77.2 61.6 80.4 63.5Q83.7 65.4 86.6 67.7Q89.5 70.0 92.2 72.7Q94.9 75.4 96.2 79.0Q97.6 82.5 98.7 86.1Q99.9 89.7 99.9 93.5Q100.0 97.3 99.7 101.1Q99.4 104.9 98.4 108.7Q97.3 112.4 95.2 115.7Q93.0 119.0 89.9 121.4Q86.8 123.7 83.6 126.0Q80.5 128.3 76.8 129.5Q73.2 130.8 69.4 131.6Q65.6 132.5 61.7 132.1L57.8 131.7" fill="none" stroke="#5b2fd9" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><path d="M93.9 75.0Q97.7 81.5 98.8 85.2Q100.0 88.8 100.3 92.6Q100.6 96.4 99.9 100.2Q99.2 103.9 97.4 107.3Q95.6 110.6 94.1 114.0Q92.5 117.5 89.8 120.0Q87.0 122.6 83.6 124.2Q80.2 125.8 76.9 127.2Q73.5 128.7 69.9 129.3Q66.3 130.0 62.7 129.7Q59.0 129.4 55.3 129.1Q51.5 128.9 48.4 126.8Q45.2 124.8 42.0 122.9Q38.7 121.0 36.3 118.1Q33.9 115.2 32.4 111.7Q31.0 108.2 30.0 104.6Q29.1 101.0 28.7 97.3Q28.4 93.6 29.2 90.0Q30.0 86.4 30.8 82.7Q31.6 79.1 33.5 75.7Q35.3 72.4 37.7 69.3Q40.1 66.3 43.3 64.0Q46.4 61.7 50.1 60.2Q53.7 58.7 57.6 57.7Q61.5 56.8 65.5 56.9Q69.5 56.9 73.3 58.1Q77.1 59.3 80.6 61.3Q84.0 63.2 87.0 65.7Q90.0 68.3 92.7 71.1Q95.4 74.0 97.4 77.4L99.5 80.8" fill="none" stroke="#5b2fd9" stroke-width="1.68" stroke-linecap="round" stroke-linejoin="round" opacity="0.5" /><path d="M116.4 36.4Q113.8 38.6 113.0 40.0Q112.2 41.3 111.6 42.5Q110.9 43.7 110.1 44.7Q109.3 45.6 108.3 46.9Q107.2 48.2 105.8 49.5Q104.4 50.8 103.2 51.4Q102.0 52.1 101.1 53.0Q100.2 54.0 99.3 54.8Q98.3 55.6 97.0 56.2Q95.7 56.9 94.1 57.5Q92.5 58.1 91.3 58.9Q90.0 59.7 88.6 60.1Q87.3 60.5 85.6 61.5L84.0 62.6" fill="none" stroke="#5b2fd9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="1.0" /><path d="M84.0 62.6L88.1 56.3" fill="none" stroke="#5b2fd9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="1.0" /><path d="M84.0 62.6L92.2 63.3" fill="none" stroke="#5b2fd9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="1.0" /><path d="M8.3 186.0Q21.5 186.6 28.0 186.7Q34.6 186.8 41.2 186.6Q47.7 186.4 54.3 185.8Q60.9 185.2 67.5 185.7Q74.0 186.1 80.6 185.9Q87.2 185.6 93.7 186.0Q100.3 186.4 106.9 186.8Q113.4 187.3 120.0 187.3Q126.6 187.3 133.1 186.9Q139.7 186.5 146.3 186.8Q152.8 187.1 159.4 186.7Q166.0 186.3 172.5 186.1Q179.1 185.8 185.7 185.9Q192.2 186.0 198.8 186.2Q205.4 186.4 211.9 186.5Q218.5 186.6 225.1 186.5Q231.6 186.4 238.2 186.2Q244.8 186.0 251.3 186.3Q257.9 186.6 264.5 186.2Q271.0 185.9 277.6 186.1Q284.2 186.2 290.7 185.6Q297.3 185.0 303.9 184.8Q310.4 184.6 317.0 185.4Q323.6 186.1 330.1 185.7Q336.7 185.4 343.3 185.4Q349.8 185.5 356.4 185.1Q363.0 184.7 369.6 185.3Q376.1 185.9 382.7 185.7Q389.3 185.6 395.8 185.2Q402.4 184.8 409.0 184.8Q415.5 184.8 422.1 185.6Q428.7 186.3 435.2 186.5Q441.8 186.7 448.4 186.0Q454.9 185.3 461.5 186.0Q468.1 186.6 474.6 186.0Q481.2 185.4 487.8 185.7L494.3 186.0" fill="none" stroke="#5b2fd9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><path d="M492.0 184.0Q491.7 197.2 491.3 203.9Q490.9 210.5 491.1 217.1Q491.2 223.8 491.9 230.4Q492.7 237.0 492.3 243.7Q492.0 250.3 492.1 256.9Q492.1 263.6 491.9 270.2Q491.6 276.8 491.8 283.5L492.0 290.1" fill="none" stroke="#5b2fd9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><path d="M492.9 288.0Q479.8 287.6 473.3 287.4Q466.7 287.2 460.2 287.7Q453.6 288.3 447.1 287.8Q440.5 287.4 434.0 287.4Q427.4 287.5 420.9 287.4Q414.3 287.4 407.8 287.9Q401.2 288.4 394.7 288.3Q388.1 288.2 381.6 288.2Q375.0 288.3 368.5 288.6Q361.9 288.8 355.3 288.1Q348.8 287.5 342.2 287.2Q335.7 287.0 329.1 287.2Q322.6 287.5 316.0 288.1Q309.5 288.7 302.9 288.0Q296.4 287.3 289.8 287.9Q283.3 288.5 276.7 288.3Q270.2 288.2 263.6 288.1Q257.1 288.0 250.5 287.6Q244.0 287.2 237.4 287.2Q230.9 287.2 224.3 287.3Q217.8 287.3 211.2 287.5Q204.7 287.6 198.1 287.2Q191.6 286.7 185.0 286.7Q178.5 286.6 171.9 287.1Q165.4 287.5 158.8 287.3Q152.3 287.1 145.7 286.8Q139.2 286.5 132.6 286.9Q126.1 287.2 119.5 287.8Q113.0 288.5 106.4 288.9Q99.9 289.2 93.3 288.4Q86.8 287.6 80.2 288.0Q73.7 288.4 67.1 288.0Q60.6 287.6 54.0 288.0Q47.5 288.4 40.9 288.6Q34.4 288.8 27.8 289.0Q21.3 289.2 14.7 288.6L8.2 288.0" fill="none" stroke="#5b2fd9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><path d="M10.0 289.5Q8.3 276.4 9.1 269.8Q9.8 263.2 9.6 256.7Q9.5 250.1 9.1 243.5Q8.8 237.0 9.1 230.4Q9.4 223.8 9.8 217.2Q10.3 210.7 10.0 204.1Q9.7 197.5 9.9 191.0L10.0 184.4" fill="none" stroke="#5b2fd9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><text x="498" y="172" font-family="'Atkinson Hyperlegible Next','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="0.2" fill="#5b2fd9" text-anchor="end" opacity="1">recognises 48 platforms and tools</text></svg></div><figcaption>Real tool, sample data. Marked up by hand.</figcaption></figure>
+<p>One-click audit of any website, built to find specific, checkable gaps instead of a generic score. It detects 48 platforms and tools, checks security headers, exposed files and email authentication records (SPF and DMARC), and grades findings by business type so a bakery is not marked down for lacking a checkout. Exports JSON for an LLM and a Markdown report for people.</p>
           <p class="stack">JavaScript, Manifest V3, DNS-over-HTTPS</p>
           <button type="button" class="acc peek" aria-expanded="false" aria-controls="peek1"><span class="acc-label">See it working</span><span class="hint">screenshot and code</span><i class="chev" aria-hidden="true"></i></button>
           <div class="acc-panel peek-panel" id="peek1" role="region" aria-label="Site Auditor: screenshot and code"><div class="acc-inner">
@@ -903,7 +933,8 @@
         </article>
         <article class="proj frame fx tilt">
           <div class="proj-head"><img class="logo" src="logos/rotation-tracker.png" width="52" height="52" alt="" loading="lazy"><div><p class="kind">Browser tool, runs locally</p><h3>Outreach Rotation Tracker</h3></div></div>
-          <p>Spreads a day&rsquo;s contacts evenly across several company mailboxes in round-robin order and enforces a daily cap on each, so no inbox carries the whole load. Imports spreadsheets and schedules timed batches, for example 40 emails at noon and 40 at 4 pm.</p>
+          <figure class="sketch"><div class="shotwrap" style="aspect-ratio:1000/305"><img loading="lazy" decoding="async" src="media/rotation-tracker.webp" alt="The Outreach Rotation Tracker showing three mailboxes, each with a daily cap bar, with a hand-drawn note." style="transform:translateY(-0%)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 305" class="mark" aria-hidden="true"><path d="M697.6 146.0Q710.9 146.3 717.5 146.7Q724.2 147.1 730.8 146.5Q737.4 145.9 744.1 146.4Q750.7 147.0 757.3 146.7Q764.0 146.4 770.6 145.9Q777.2 145.5 783.9 145.4Q790.5 145.4 797.2 145.7Q803.8 146.0 810.4 145.4Q817.1 144.9 823.7 145.1Q830.3 145.2 837.0 144.8Q843.6 144.5 850.2 144.3Q856.9 144.2 863.5 144.3Q870.1 144.3 876.8 144.4Q883.4 144.5 890.0 144.6Q896.7 144.7 903.3 145.3L909.9 146.0" fill="none" stroke="#B79CFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><path d="M908.0 143.8Q907.3 157.1 907.3 163.7Q907.2 170.3 907.0 176.9Q906.7 183.6 907.0 190.2Q907.2 196.8 907.8 203.4Q908.4 210.0 908.3 216.7Q908.1 223.3 908.1 229.9Q908.0 236.5 908.4 243.1Q908.7 249.7 909.0 256.4Q909.3 263.0 908.6 269.6L908.0 276.2" fill="none" stroke="#B79CFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><path d="M909.9 274.0Q896.7 275.7 890.0 275.1Q883.4 274.6 876.8 274.4Q870.2 274.2 863.6 274.2Q857.0 274.2 850.3 274.5Q843.7 274.9 837.1 275.1Q830.5 275.3 823.9 275.4Q817.3 275.4 810.7 275.5Q804.0 275.6 797.4 275.1Q790.8 274.7 784.2 274.7Q777.6 274.8 771.0 274.5Q764.3 274.3 757.7 274.3Q751.1 274.3 744.5 274.2Q737.9 274.1 731.3 273.8Q724.6 273.5 718.0 273.3Q711.4 273.1 704.8 273.6L698.2 274.0" fill="none" stroke="#B79CFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><path d="M700.0 276.2Q701.2 263.0 700.7 256.4Q700.1 249.8 700.3 243.2Q700.5 236.7 700.7 230.1Q701.0 223.5 701.1 216.9Q701.1 210.3 701.3 203.8Q701.5 197.2 701.2 190.6Q700.9 184.0 700.9 177.4Q700.9 170.8 700.2 164.3Q699.5 157.7 699.8 151.1L700.0 144.5" fill="none" stroke="#B79CFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="1" /><text x="296" y="198" font-family="'Atkinson Hyperlegible Next','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="0.3" fill="#E9E1D4" text-anchor="start" opacity="1">each mailbox has</text><text x="296" y="232" font-family="'Atkinson Hyperlegible Next','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="0.3" fill="#E9E1D4" text-anchor="start" opacity="1">its own daily cap</text><path d="M527.6 214.3Q540.0 211.0 545.2 209.6Q550.5 208.2 556.5 207.2Q562.5 206.2 568.4 205.7Q574.3 205.1 579.9 204.4Q585.6 203.8 591.1 203.2Q596.7 202.6 602.4 202.3Q608.1 202.1 614.4 201.7Q620.6 201.3 626.3 201.9Q632.1 202.5 637.6 202.2Q643.2 202.0 649.0 202.8Q654.8 203.6 660.5 204.2Q666.2 204.8 672.1 205.6Q678.1 206.3 684.3 207.4L690.5 208.4" fill="none" stroke="#B79CFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="1.0" /><path d="M690.5 208.4L677.0 213.3" fill="none" stroke="#B79CFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="1.0" /><path d="M690.5 208.4L679.1 200.4" fill="none" stroke="#B79CFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="1.0" /></svg></div><figcaption>Real tool, sample data. Marked up by hand.</figcaption></figure>
+<p>Spreads a day&rsquo;s contacts evenly across several company mailboxes in round-robin order and enforces a daily cap on each, so no inbox carries the whole load. Imports spreadsheets and schedules timed batches, for example 40 emails at noon and 40 at 4 pm.</p>
           <p class="stack">HTML, CSS, JavaScript</p>
           <button type="button" class="acc peek" aria-expanded="false" aria-controls="peek2"><span class="acc-label">See it working</span><span class="hint">screenshot and code</span><i class="chev" aria-hidden="true"></i></button>
           <div class="acc-panel peek-panel" id="peek2" role="region" aria-label="Outreach Rotation Tracker: screenshot and code"><div class="acc-inner">
@@ -911,7 +942,7 @@
               <button type="button" role="tab" id="peek2t1" aria-selected="true" aria-controls="peek2p1">Screenshot</button>
               <button type="button" role="tab" id="peek2t2" aria-selected="false" aria-controls="peek2p2">Code</button>
             </div>
-            <div class="tabpanel" id="peek2p1" role="tabpanel" aria-labelledby="peek2t1"><div class="shot-box"><img src="media/rotation-tracker.webp" alt="The Outreach Rotation Tracker showing three mailboxes with daily caps, two timed campaigns and contacts assigned in rotation" loading="lazy" width="1000" height="1308"></div><p class="sample-note">The real tool running on fictional contacts. Sample data.</p></div>
+            <div class="tabpanel" id="peek2p1" role="tabpanel" aria-labelledby="peek2t1"><div class="shot-box"><img loading="lazy" decoding="async" src="media/rotation-tracker.webp" alt="The Outreach Rotation Tracker showing three mailboxes with daily caps, two timed campaigns and contacts assigned in rotation" loading="lazy" width="1000" height="1308"></div><p class="sample-note">The real tool running on fictional contacts. Sample data.</p></div>
             <div class="tabpanel" id="peek2p2" role="tabpanel" aria-labelledby="peek2t2" hidden><pre class="code"><code><span class="k">function</span> assignBatch(contacts, label) {
   <span class="k">let</span> ptr = state.rrPointer;                    <span class="c">// keeps rotating across batches</span>
   contacts.forEach(c =&gt; {
@@ -937,7 +968,8 @@
     <div class="case-grid" data-book="Inside companies">
       <article class="case frame fx">
         <div class="proj-head"><div><div class="status-row"><span class="status">Employer work</span></div><h3>Built the outbound engine for a web agency</h3></div></div>
-        <dl class="case-dl">
+        <figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/c1-avian.svg" width="480" height="200" alt="Hand-drawn figures: a ring showing a 20% response rate, tally marks for 50 or more prospects a month, and bars showing a 15% rise in client engagement."></figure>
+<dl class="case-dl">
           <dt>Brief</dt><dd>Win new clients for a web development agency through outbound email.</dd>
           <dt>What I did</dt><dd>Ran outbound to 50+ prospective clients a month, set up the first CRM and client-communication workflows, and kept every lead, follow-up and conversion in one place. Alongside it I handled SEO and social content.</dd>
           <dt>What changed</dt><dd class="result">A 20% response rate, a 15% rise in client engagement after the brand-positioning work, and better brand visibility on LinkedIn and Google Search. I moved from intern to full-time.</dd>
@@ -946,7 +978,8 @@
       </article>
       <article class="case frame fx">
         <div class="proj-head"><div><div class="status-row"><span class="status">Employer work</span></div><h3>Turned lead sourcing into a workflow</h3></div></div>
-        <dl class="case-dl">
+        <figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/c2-sphinx.svg" width="480" height="200" alt="Hand-drawn sketch: Apollo, Sales Navigator and Google Sheets feed a CRM with validated data, then nurturing, then a handover to a human sales call."></figure>
+<dl class="case-dl">
           <dt>Brief</dt><dd>Lay the groundwork for an automated lead process for the European market.</dd>
           <dt>What I did</dt><dd>Connected Apollo, Sales Navigator, Google Sheets and a CRM so leads move from discovery, through nurturing, to a handover for a human sales call, and validated the data behind it.</dd>
           <dt>What changed</dt><dd class="result">Sourcing, checking and nurturing sat in one workflow, with clean, validated datasets going to the team and a clear point where a person takes over.</dd>
@@ -955,7 +988,8 @@
       </article>
       <article class="case frame fx">
         <div class="proj-head"><div><div class="status-row"><span class="status">Contract work</span></div><h3>Kept a software build tied to what the client needed</h3></div></div>
-        <dl class="case-dl">
+        <figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/c3-contract.svg" width="480" height="200" alt="Hand-drawn sketch: the client, me and the dev team, with arrows both ways. One point of contact, with a scope sheet above."></figure>
+<dl class="case-dl">
           <dt>Brief</dt><dd>Deliver a custom employee management system for a client, under an independent contract.</dd>
           <dt>What I did</dt><dd>Worked directly with the client to scope the requirements, then coordinated tasks and timelines with the development team.</dd>
           <dt>What changed</dt><dd class="result">One point of contact between the client and the developers, with the scope pinned down before the build rather than discovered during it.</dd>
@@ -968,12 +1002,14 @@
     <div class="more-grid" data-book="Also built">
       <article class="proj frame fx tilt">
         <div class="proj-head"><img class="logo" src="logos/converter.png" width="52" height="52" alt="" loading="lazy"><div><p class="kind">Solo project, in development</p><h3>Android file and media converter</h3></div></div>
-        <p>A privacy-focused Android utility for converting images and PDFs, built to work entirely on the phone. In development and not yet released.</p>
+        <figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/a1-converter.svg" width="480" height="200" alt="Hand-drawn sketch: an image and a PDF go into a phone and come out converted, with a crossed-out cloud: nothing is uploaded."></figure>
+<p>A privacy-focused Android utility for converting images and PDFs, built to work entirely on the phone. In development and not yet released.</p>
         <p class="stack">Kotlin, Jetpack Compose, Android Studio</p>
       </article>
       <article class="proj frame fx tilt">
         <div class="proj-head"><img class="logo" src="logos/optimisation.png" width="52" height="52" alt="" loading="lazy"><div><p class="kind">Collaborator on a University of Surrey MSc dissertation project</p><h3>Continuous paracetamol manufacturing</h3></div></div>
-        <p>Wrote and led the Python codebase for a multi-objective optimisation and cost analysis of a continuous pharmaceutical process, and turned the results into documentation for a non-technical academic audience.</p>
+        <figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/a2-paracetamol.svg" width="480" height="200" alt="Hand-drawn sketch: a continuous process line (feed, reactor, crystalliser, filter, product) and a trade-off curve, labelled as an illustration, not data."></figure>
+<p>Wrote and led the Python codebase for a multi-objective optimisation and cost analysis of a continuous pharmaceutical process, and turned the results into documentation for a non-technical academic audience.</p>
         <p class="stack">Python, NSGA-II (pymoo), DWSIM</p>
       </article>
     </div>
@@ -1020,7 +1056,8 @@
     <div class="lab-grid" data-book="Work in progress">
       <article class="lab-card frame fx">
         <div class="proj-head"><div><span class="status st-play">Playable</span><h3>House Defence</h3></div></div>
-        <p class="kind">Browser game</p>
+        <figure class="sketch"><img class="sk" loading="lazy" decoding="async" src="media/sketches/l1-house.svg" width="480" height="200" alt="Hand-drawn sketch: a top-down arena with a house in the middle and enemies converging from every side."></figure>
+<p class="kind">Browser game</p>
         <p>A chaotic top-down game built from my own photos, drawings and sound effects. It runs in the browser with a tap, no install.</p>
         <p class="stack">JavaScript, HTML canvas</p>
         <a class="lab-link" href="https://prathamnova2003-alt.github.io/big-bug-in-little-delhi/" target="_blank" rel="noopener">Play it</a>
@@ -1952,6 +1989,7 @@
       self.root.classList.remove('dragging'); try { st.releasePointerCapture(e.pointerId); } catch (x) {}
       self.animateTo((self.p > 0.35 || d.v > 0.45) && d.v > -0.2 ? 1 : 0, 700);
     }
+    st.addEventListener('dragstart', function (e) { e.preventDefault(); });   // a picture must never start the browser's own image drag
     st.addEventListener('pointerup', up); st.addEventListener('pointercancel', up); st.addEventListener('selectstart', function (e) { if (self.drag) e.preventDefault(); });
     // a sideways trackpad or mouse-wheel scroll turns the page too
     var acc = 0, lastWheel = 0;
