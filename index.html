@@ -605,12 +605,20 @@
   @media (prefers-reduced-motion: reduce) { #fx-water { display: none; } }
 
 
-  /* ---------- the two rows build themselves: standing slabs, seen from above, tip over like dominoes ---------- */
-  html.dm .flow-steps:not(.built) { perspective: 1300px; perspective-origin: 50% -70%; }
-  html.dm .flow-steps:not(.built) li { transform-origin: 0 50%; transform: rotateY(-90deg); animation: none; will-change: transform; box-shadow: inset 0 0 0 999px rgba(var(--bg-rgb), var(--dm-d, 0.55)); }
+  /* ---------- the two rows build themselves: a run of domino bricks topples along the row and each card drops in as the wave reaches it ---------- */
+  html.dm .flow-steps:not(.built) { position: relative; }
+  html.dm .flow-steps:not(.built) li { opacity: 0; transform: translateY(-28px) scale(0.96); animation: none; }
+  html.dm .flow-steps:not(.built) li.shown { opacity: 1; transform: none; transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.2, 1.55, 0.4, 1); }
   html.dm .flow-steps:not(.built) li::after { opacity: 0; }
   .flow-steps li::after { transition: opacity 0.6s ease; }
-  @media print { .flow-steps li { transform: none !important; box-shadow: none !important; } .flow-steps li::after { opacity: 1 !important; } }
+  .dm-stage { position: absolute; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none; z-index: 4; transition: opacity 0.55s ease; }
+  .dm-ground { position: absolute; left: 0; right: 0; bottom: 11px; height: 1px; background: rgba(var(--ink-rgb), 0.22); }
+  .dm-b { position: absolute; bottom: 12px; width: 18px; height: 62px; transform-origin: 100% 100%; border-radius: 4px; will-change: transform;
+    background: linear-gradient(135deg, #cdb9ff 0%, #9370f8 36%, #5b38d8 72%, #3d22a6 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4), inset 0 -5px 7px rgba(24, 8, 76, 0.5), inset 3px 0 4px rgba(255, 255, 255, 0.18), 0 4px 8px rgba(0, 0, 0, 0.3); }
+  .dm-b::before { content: ""; position: absolute; left: 2px; right: 2px; top: 50%; height: 2px; margin-top: -1px; background: rgba(255, 255, 255, 0.75); border-radius: 1px; box-shadow: 0 1px 0 rgba(30, 10, 90, 0.5); }
+  .dm-b i { position: absolute; left: 50%; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0.5px rgba(30, 10, 90, 0.35); }
+  @media print { .dm-stage { display: none !important; } .flow-steps li { opacity: 1 !important; transform: none !important; } .flow-steps li::after { opacity: 1 !important; } }
 
   /* ---------- vector figures ---------- */
   .sketch { margin: 0 0 18px; }
@@ -631,6 +639,16 @@
   @media print { .sketch { display: none !important; } }
 
   /* ---------- books ---------- */
+  /* the turning page is folded, like an e-reader: a straight fold sweeps across it, the back of the page is reflected over the fold */
+  .bk-cast { display: none; }
+  .bk-hc { position: absolute; left: 0; top: 0; overflow: hidden; transform-origin: 0 0; will-change: transform; }
+  .bk-hi { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+  .bk-fr { position: absolute; overflow: hidden; background: var(--paper); z-index: 1; isolation: isolate; }
+  .bk-bk { position: absolute; left: 0; top: 0; overflow: hidden; transform-origin: 0 0; will-change: transform; background: var(--paper); z-index: 2; isolation: isolate; }
+  .bk-fsh, .bk-bsh { position: absolute; inset: 0; pointer-events: none; }
+  .bk-castw { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 19; }
+  .bk-c1, .bk-c2 { position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none; will-change: transform; }
+
   .book { position: relative; margin: 8px 0 4px; }
   .book-stage { position: relative; touch-action: pan-y; }
   .book.single .book-stage { overflow: hidden; border-radius: 8px; }
@@ -1946,16 +1964,16 @@
     return c;
   };
   Book.prototype.buildLeaf = function (frontPg, backPg) {
-    var W = this.pageW, H = this.stageH, N = window.__BK_N || (this.mode === 'spread' ? Q.n : Math.max(8, Q.n - 2)), sw = W / N, OV = window.__BK_OV || 1.5, strips = [];
+    var W = this.pageW, H = this.stageH, SW = this.stageW, hx = this.mode === 'spread' ? W : 0, Wb = SW + 2 * W, Hb = 2 * H + SW + 400, i;
+    var castw = el('div', 'bk-castw', this.stage), c1 = el('div', 'bk-c1', castw), c2 = el('div', 'bk-c2', castw);
     var leaf = el('div', 'bk-leaf', this.stage);
-    for (var i = 0; i < N; i++) {
-      var st = el('div', 'bk-s', leaf); st.style.width = (sw + 2 * OV) + 'px'; st.style.height = H + 'px';        // each strip reaches into its neighbours, so no seam can open
-      var f = el('div', 'bk-f', st), b = el('div', 'bk-b', st);
-      f.appendChild(this.cloneFor(frontPg, -i * sw + OV, 'right'));
-      if (backPg) b.appendChild(this.cloneFor(backPg, -(N - 1 - i) * sw + OV, 'left')); else b.className += ' bk-blank';
-      strips.push({ st: st, f: f, b: b, side: 1, fl: el('div', 'bk-shl', f), fr: el('div', 'bk-shr', f), bl: el('div', 'bk-shl', b), br: el('div', 'bk-shr', b) });
-    }
-    return { el: leaf, strips: strips, sw: sw, ov: OV, w: sw + 2 * OV };
+    var hc = el('div', 'bk-hc', leaf), hi = el('div', 'bk-hi', hc); hc.style.width = Wb + 'px'; hc.style.height = Hb + 'px';           // everything on the spine side of the fold is kept; the rest is clipped away
+    var fr = el('div', 'bk-fr', hi); fr.style.cssText = 'left:' + hx + 'px;top:0;width:' + W + 'px;height:' + H + 'px;';                  // the part of the page still lying flat
+    fr.appendChild(this.cloneFor(frontPg, 0, 'right')); var fsh = el('div', 'bk-fsh', fr);
+    var bk = el('div', 'bk-bk', hi); bk.style.width = W + 'px'; bk.style.height = H + 'px';                                               // the back of the page, folded over
+    var back; if (backPg) back = this.cloneFor(backPg, 0, 'left'); else { back = el('div', 'pg pg-clone'); back.style.cssText = 'left:0;top:0;width:' + W + 'px;height:' + H + 'px;border-radius:0;background:var(--paper);'; }
+    bk.appendChild(back); var bsh = el('div', 'bk-bsh', bk);
+    return { el: leaf, castw: castw, c1: c1, c2: c2, hc: hc, hi: hi, fr: fr, fsh: fsh, bk: bk, bsh: bsh, Wb: Wb, Hb: Hb };
   };
 
   Book.prototype.plan = function (dir) {
@@ -1984,44 +2002,40 @@
     this.leaf = L; this.dir = dir; this.root.classList.add('turning'); this.setProgress(0); return true;
   };
   // p: 0 = not turned, 1 = fully turned
-  // a rectangle (src) mapped onto the four projected corners (dst): the 3x3 projective matrix, returned as a CSS matrix3d
-  function homography(sx, sy, d) {
-    var A = [], B = [], k, i, j, m;
-    for (k = 0; k < 4; k++) { A.push([sx[k], sy[k], 1, 0, 0, 0, -d[k][0] * sx[k], -d[k][0] * sy[k]]); B.push(d[k][0]); A.push([0, 0, 0, sx[k], sy[k], 1, -d[k][1] * sx[k], -d[k][1] * sy[k]]); B.push(d[k][1]); }
-    for (i = 0; i < 8; i++) {
-      var piv = i; for (j = i + 1; j < 8; j++) if (Math.abs(A[j][i]) > Math.abs(A[piv][i])) piv = j;
-      var t = A[i]; A[i] = A[piv]; A[piv] = t; t = B[i]; B[i] = B[piv]; B[piv] = t;
-      for (j = i + 1; j < 8; j++) { m = A[j][i] / A[i][i]; for (k = i; k < 8; k++) A[j][k] -= m * A[i][k]; B[j] -= m * B[i]; }
-    }
-    var h = new Array(8); for (i = 7; i >= 0; i--) { var sum = B[i]; for (j = i + 1; j < 8; j++) sum -= A[i][j] * h[j]; h[i] = sum / A[i][i]; }
-    return 'matrix3d(' + [h[0], h[3], 0, h[6], h[1], h[4], 0, h[7], 0, 0, 1, 0, h[2], h[5], 0, 1].map(function (v) { return v.toFixed(7); }).join(',') + ')';
+  function f2(v) { return v.toFixed(2); }
+  // a gradient measured along a direction, with stops given as distances s from the fold (kept in order and a little apart)
+  function gradient(angle, len, sc, stops) {
+    var out = [], last = -1e9; stops.forEach(function (st) { var t = len / 2 + (st[0] - sc); if (t < last + 0.6) t = last + 0.6; last = t; out.push(st[1] + ' ' + t.toFixed(1) + 'px'); });
+    return 'linear-gradient(' + angle.toFixed(2) + 'deg,' + out.join(',') + ')';
   }
   Book.prototype.setProgress = function (p) {
-    if (!this.leaf) return; this.p = p; var dir = this.dir, A = dir > 0 ? 180 * p : 180 * (1 - p), L = this.leaf, N = L.strips.length, sw = L.sw, OV = L.ov, K = 21, sA = Math.sin(A * D2R), sgn = dir > 0 ? 1 : -1, phi = new Array(N), i, x = 0, z = 0;
-    var H = this.stageH, hx = this.mode === 'spread' ? this.pageW : 0, DD = 2600, ox = this.stageW / 2, oy = H * 0.35;
-    function proj(X, Y, Z) { var k = DD / (DD - Z); return [ox + (X - ox) * k, oy + (Y - oy) * k]; }           // the same camera the 3D version used
-    for (i = 0; i < N; i++) { var t = (i + 0.5) / N; phi[i] = clamp(A + sgn * K * sA * Math.pow(t, 1.35), 0, 180); }    // the free edge leads, the spine barely moves
-    var seam = new Array(N + 1); seam[0] = phi[0]; seam[N] = phi[N - 1]; for (i = 1; i < N; i++) seam[i] = (phi[i - 1] + phi[i]) / 2;
-    function dark(a) { return 0.46 * Math.pow(Math.sin(a * D2R), 1.15); }
-    var sx = [0, L.w, L.w, 0], sy = [0, 0, H, H];
-    for (i = 0; i < N; i++) {
-      var st = L.strips[i], c = Math.cos(phi[i] * D2R), sn = Math.sin(phi[i] * D2R), u0 = -OV, u1 = sw + OV;
-      var X0 = hx + x + u0 * c, Z0 = z + u0 * sn, X1 = hx + x + u1 * c, Z1 = z + u1 * sn;
-      st.st.style.transform = homography(sx, sy, [proj(X0, 0, Z0), proj(X1, 0, Z1), proj(X1, H, Z1), proj(X0, H, Z0)]);
-      var side = c >= 0 ? 1 : -1; if (side !== st.side) { st.side = side; st.f.style.display = side > 0 ? 'block' : 'none'; st.b.style.display = side > 0 ? 'none' : 'block'; }
-      var dl = dark(seam[i]).toFixed(3), dr = dark(seam[i + 1]).toFixed(3);                       // each seam's shade is shared by both neighbours, so it never steps
-      st.fl.style.opacity = dl; st.fr.style.opacity = dr; st.bl.style.opacity = dr; st.br.style.opacity = dl;
-      x += sw * c; z += sw * sn;
-    }
-    var c2 = this.cast, w = this.pageW * 0.34, edge = hx + x, amp = 0.9 * sA;
-    if (A < 90) { c2.style.left = edge + 'px'; c2.style.width = w + 'px'; c2.style.background = 'linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.22) 35%, rgba(0,0,0,0))'; c2.style.opacity = amp.toFixed(3); }
-    else if (this.mode === 'spread') { c2.style.left = (edge - w) + 'px'; c2.style.width = w + 'px'; c2.style.background = 'linear-gradient(270deg, rgba(0,0,0,0.6), rgba(0,0,0,0.22) 35%, rgba(0,0,0,0))'; c2.style.opacity = amp.toFixed(3); }
-    else c2.style.opacity = 0;
-    if (this.mode === 'single' && A > 100 && dir > 0) L.el.style.opacity = Math.max(0, (175 - A) / 75); else L.el.style.opacity = 1;
+    if (!this.leaf) return; this.p = p; var L = this.leaf, W = this.pageW, H = this.stageH, hx = this.mode === 'spread' ? W : 0, SW = this.stageW;
+    var q = clamp(this.dir > 0 ? p : 1 - p, 0, 1), uf = W * (1 - q), Fx = hx + uf, Fy = H / 2;                // where the fold is: it sweeps from the outer edge to the spine
+    var tilt = ((this.gy == null ? 0.8 : this.gy) - 0.5) * 2 * 11 * Math.pow(Math.sin(Math.PI * q), 0.85);   // a grab near a corner leans the fold, like a real page
+    var ph = tilt * D2R, c = Math.cos(ph), sn = Math.sin(ph), c2 = Math.cos(2 * ph), s2 = Math.sin(2 * ph), Wb = L.Wb, Hb = L.Hb;
+    L.hc.style.transform = 'translate(' + f2(Fx) + 'px,' + f2(Fy) + 'px) rotate(' + tilt.toFixed(3) + 'deg) translate(' + (-Wb) + 'px,' + (-Hb / 2) + 'px)';
+    L.hi.style.transform = 'translate(' + Wb + 'px,' + (Hb / 2) + 'px) rotate(' + (-tilt).toFixed(3) + 'deg) translate(' + f2(-Fx) + 'px,' + f2(-Fy) + 'px)';
+    // the back of the page: the mirror of the front, reflected across the fold (a rotation by twice the fold angle)
+    var r0 = 1 - 2 * c * c, r1 = -2 * c * sn, r3 = 1 - 2 * sn * sn, tx = hx + W - Fx, ty = -Fy, Tx = Fx + r0 * tx + r1 * ty, Ty = Fy + r1 * tx + r3 * ty;
+    L.bk.style.transform = 'matrix(' + [c2, s2, -s2, c2, Tx, Ty].map(function (v) { return v.toFixed(5); }).join(',') + ')';
+    var de = c * (W - uf), band = 0.13 * W, aF = 90 + tilt, lenF = Math.abs(W * Math.sin(aF * D2R)) + Math.abs(H * Math.cos(aF * D2R)), scF = c * (W / 2 - uf);
+    // light on the page lying flat: the flap throws a soft shadow just beyond its far edge
+    L.fsh.style.background = gradient(aF, lenF, scF, [[-de - band, 'rgba(0,0,0,0)'], [-de - band * 0.4, 'rgba(0,0,0,0.10)'], [-de, 'rgba(0,0,0,0.30)'], [-de + 0.5, 'rgba(0,0,0,0.30)'], [4000, 'rgba(0,0,0,0.30)']]);
+    // light on the flap: a bright rolled edge at the fold, then paper, then a little shade towards its far edge
+    var aB = 90 - tilt, lenB = Math.abs(W * Math.sin(aB * D2R)) + Math.abs(H * Math.cos(aB * D2R));
+    var scB = c * (c2 * W / 2 - s2 * H / 2 + Tx - Fx) + sn * (s2 * W / 2 + c2 * H / 2 + Ty - Fy);
+    L.bsh.style.background = gradient(aB, lenB, scB, [[-4000, 'rgba(0,0,0,0.30)'], [-de, 'rgba(0,0,0,0.30)'], [-de * 0.5, 'rgba(0,0,0,0.10)'], [-34, 'rgba(0,0,0,0.04)'], [-12, 'rgba(255,255,255,0.22)'], [-2, 'rgba(0,0,0,0.20)'], [0, 'rgba(0,0,0,0.32)'], [0.5, 'rgba(0,0,0,0)']]);
+    // shadows on whatever lies beneath: beyond the flap's far edge, and on the page being uncovered
+    var fade = clamp(q * 7, 0, 1) * clamp((1 - q) * 7, 0, 1), Hbig = H + SW, b1 = 0.15 * W, b2 = 0.12 * W;
+    L.c1.style.width = b1 + 'px'; L.c1.style.height = Hbig + 'px'; L.c1.style.background = 'linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,0.34))';
+    L.c1.style.transform = 'translate(' + f2(Fx - c * de) + 'px,' + f2(Fy - sn * de) + 'px) rotate(' + tilt.toFixed(3) + 'deg) translate(' + (-b1) + 'px,' + (-Hbig / 2) + 'px)'; L.c1.style.opacity = fade.toFixed(3);
+    L.c2.style.width = b2 + 'px'; L.c2.style.height = Hbig + 'px'; L.c2.style.background = 'linear-gradient(90deg,rgba(0,0,0,0.30),rgba(0,0,0,0.10) 45%,rgba(0,0,0,0))';
+    L.c2.style.transform = 'translate(' + f2(Fx) + 'px,' + f2(Fy) + 'px) rotate(' + tilt.toFixed(3) + 'deg) translate(0px,' + (-Hbig / 2) + 'px)'; L.c2.style.opacity = fade.toFixed(3);
+    if (this.mode === 'single' && this.dir > 0 && q > 0.55) L.el.style.opacity = Math.max(0, (0.97 - q) / 0.42).toFixed(3); else L.el.style.opacity = 1;
   };
   // finish: commit the turn (done) or put it back (not done)
   Book.prototype.end = function (done) {
-    var L = this.leaf; if (!L) return; L.el.remove(); this.cast.style.opacity = 0; this.leaf = null; this.root.classList.remove('turning');
+    var L = this.leaf; if (!L) return; L.el.remove(); if (L.castw) L.castw.remove(); this.cast.style.opacity = 0; this.leaf = null; this.root.classList.remove('turning');
     if (done) { this.pos += this.dir; learn(); }
     this.show();
     var a = document.activeElement; if (a && a !== document.body && this.root.contains(a) && a.closest && a.closest('[inert]')) this.root.focus({ preventScroll: true });
@@ -2041,7 +2055,7 @@
       }
     })(t0);
   };
-  Book.prototype.go = function (dir) { if (this.busy || this.leaf || !this.canTurn(dir)) return; if (reduce) { this.pos += dir; this.show(); return; } this.begin(dir); this.animateTo(1, 950); };
+  Book.prototype.go = function (dir) { if (this.busy || this.leaf || !this.canTurn(dir)) return; this.gy = 0.8; if (reduce) { this.pos += dir; this.show(); return; } this.begin(dir); this.animateTo(1, 950); };
 
   Book.prototype.bind = function () {
     var self = this, st = this.stage;
@@ -2054,7 +2068,7 @@
       if (e.target.closest('a, button, input, textarea, select, summary, [role=tab], .shot-box, pre, .bk-ear')) return;
       self.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, lx: e.clientX, lt: e.timeStamp, v: 0, on: false };
       // put the leaf in place right away: at zero it looks exactly like the flat page, and the browser sets its layers up before the hand moves
-      var r0 = st.getBoundingClientRect(), guess = (self.mode === 'single' || (e.clientX - r0.left) > r0.width / 2) ? 1 : -1;
+      var r0 = st.getBoundingClientRect(), guess = (self.mode === 'single' || (e.clientX - r0.left) > r0.width / 2) ? 1 : -1; self.gy = clamp((e.clientY - r0.top) / r0.height, 0.08, 0.92);
       if (self.canTurn(guess)) self.begin(guess);
     });
     st.addEventListener('pointermove', function (e) {
@@ -2577,45 +2591,70 @@
 })();
 </script>
 <script>
-/* ---------------- dominoes: the two rows of steps assemble themselves ---------------- */
+/* ---------------- dominoes: a run of bricks topples along each row of steps, and each card drops in as the wave reaches it ---------------- */
 (function () {
   var root = document.documentElement; if (!root.classList.contains('dm')) return;
   if (window.matchMedia('(max-width: 760px)').matches) { root.classList.remove('dm'); return; }          // a phone: the early check can run before the viewport is known, so confirm it here
-  var rows = [].slice.call(document.querySelectorAll('.flow-steps')), PI2 = Math.PI / 2, SLOW = 1.4;     // replayed in gentle slow motion
-  // a standing slab is a rod that tips about its base: phi'' = k sin(phi). Simulated once, replayed as plain transforms.
+  var rows = [].slice.call(document.querySelectorAll('.flow-steps'));
+  var BR = { w: 18, h: 62, p: 50, g: 5200, c: 0.65, e: 0.16, kick: 6.4, flick: 5.8, margin: 14 }, PI2 = Math.PI / 2, DT = 1 / 480;
+  // One brick's fall is integrated under gravity (rod tipping about its front corner, with a kick from the impact and a small bounce).
+  // Every brick replays that fall at the moment the one before it touches it. A back-to-front limit means no brick can be inside the one it leans on.
   function simulate(n) {
-    var k = 62, c = 0.9, e = 0.22, PHC = 0.62, dt = 1 / 240, phi = [], om = [], st = [], i, s, frames = [], allRest;
-    for (i = 0; i < n; i++) { phi[i] = 0; om[i] = 0; st[i] = 0; }
-    phi[0] = 0.045; om[0] = 0.25; st[0] = 1;                                         // the nudge that starts the first one
-    for (s = 0; s < 1200; s++) {
-      for (i = 0; i < n; i++) {
-        if (st[i] !== 1) continue;
-        om[i] += (k * Math.sin(phi[i]) - c * om[i]) * dt; phi[i] += om[i] * dt;
-        if (phi[i] >= PHC && i + 1 < n && st[i + 1] === 0) { st[i + 1] = 1; phi[i + 1] = 0.05; om[i + 1] = Math.max(0.55, om[i] * 0.5); }   // it touches the next one and shoves it
-        if (phi[i] >= PI2) { phi[i] = PI2; if (om[i] > 1.1) om[i] = -e * om[i]; else { om[i] = 0; st[i] = 2; } }                            // it lands: a small bounce, then rest
-      }
-      frames.push(Float32Array.from(phi)); allRest = true; for (i = 0; i < n; i++) if (st[i] !== 2) allRest = false;
-      if (allRest) { for (i = 0; i < 12; i++) frames.push(Float32Array.from(phi)); break; }
+    var w = BR.w, h = BR.h, p = BR.p, M = 1000, j, k;
+    function psi(t) { return t - Math.asin(Math.max(-1, Math.min(1, (w - p * Math.cos(t)) / h))); }
+    function fall(w0) { var th = new Float32Array(M), cur = 0, om = w0, kk; for (kk = 0; kk < M; kk++) { var al = 3 * BR.g * (h * Math.sin(cur) - w * Math.cos(cur)) / (2 * (h * h + w * w)); om += (al - BR.c * om) * DT; cur += om * DT; if (cur < 0) { cur = 0; if (om < 0) om = 0; } if (cur > PI2) { cur = PI2; om = om > 1.2 ? -BR.e * om : 0; } th[kk] = cur; } return th; }
+    function at(arr, tau) { if (tau <= 0) return 0; var x = tau / DT, i = Math.floor(x); return i >= M - 1 ? arr[M - 1] : arr[i] + (arr[i + 1] - arr[i]) * (x - i); }
+    function reach(arr, a) { for (var kk = 0; kk < M; kk++) if (arr[kk] >= a) return kk * DT; return 1; }
+    var F0 = fall(BR.flick), F = fall(BR.kick), contact = psi(0), d0 = reach(F0, contact), d1 = reach(F, contact), tj = [0], A = [], T;
+    for (j = 1; j < n; j++) tj[j] = tj[j - 1] + (j === 1 ? d0 : d1);
+    T = Math.round((tj[n - 1] + 1.4) / DT); for (j = 0; j < n; j++) A.push(new Float32Array(T));
+    for (k = 0; k < T; k++) for (j = 0; j < n; j++) A[j][k] = Math.min(PI2, at(j === 0 ? F0 : F, k * DT - tj[j]));
+    for (j = n - 2; j >= 0; j--) for (k = 0; k < T; k++) { var lim = psi(A[j + 1][k]); if (A[j][k] > lim) A[j][k] = lim; }
+    var end = 0; for (k = T - 1; k > 0 && !end; k--) for (j = 0; j < n; j++) if (Math.abs(A[j][k] - A[j][k - 1]) > 2e-5) { end = k; break; }
+    var len = Math.min(T, end + 24), t45 = [], land = []; for (j = 0; j < n; j++) { t45[j] = 0; land[j] = 0; for (k = 0; k < len; k++) if (A[j][k] > 0.785) { t45[j] = k * DT; break; } for (k = 0; k < len; k++) if (A[j][k] > 1.0) { land[j] = k * DT; break; } }
+    return { A: A, len: len, dur: len * DT, t45: t45, land: land };
+  }
+  var PIPS = [[16], [9, 23], [6, 16, 26], [6, 12, 20, 26]];
+  function ensureStage(row) {
+    var W = row.clientWidth, st = row.__stage; if (st && Math.abs(st.w - W) < 3) return st;
+    if (st) st.el.remove();
+    var n = Math.max(6, Math.floor((W - 2 * BR.margin - BR.w - BR.h) / BR.p) + 1), el = document.createElement('div'), bricks = [], i, q;
+    el.className = 'dm-stage'; el.innerHTML = '<div class="dm-ground"></div>';
+    for (i = 0; i < n; i++) {
+      var b = document.createElement('div'); b.className = 'dm-b'; b.style.left = (BR.margin + i * BR.p) + 'px';
+      for (q = 0; q < 2; q++) { var set = PIPS[(i * 3 + q * 5 + 1) % PIPS.length]; set.forEach(function (y) { var d = document.createElement('i'); d.style.top = (y + (q ? 32 : 0) - 4) + 'px'; b.appendChild(d); }); }
+      el.appendChild(b); bricks.push(b);
     }
-    return { dt: dt, frames: frames, duration: frames.length * dt };
+    row.appendChild(el); return (row.__stage = { el: el, bricks: bricks, w: W, n: n, sim: null, reveal: null });
   }
-  function paint(row, lis, sim, t) {
-    var idx = Math.min(sim.frames.length - 1, Math.floor(t / (sim.dt * SLOW))), f = sim.frames[idx];
-    for (var i = 0; i < lis.length; i++) { var ph = f[i]; lis[i].style.transform = 'rotateY(' + (ph * 180 / Math.PI - 90).toFixed(2) + 'deg)'; lis[i].style.setProperty('--dm-d', (0.55 * Math.cos(ph)).toFixed(3)); }
+  function paint(st, t) {
+    var f = Math.max(0, t / DT), i = Math.min(st.sim.len - 1, Math.floor(f)), i2 = Math.min(st.sim.len - 1, i + 1), u = f - i, A = st.sim.A;
+    for (var j = 0; j < st.n; j++) { var a = A[j][i] + (A[j][i2] - A[j][i]) * u; var b = st.bricks[j]; b.style.transform = a < 1e-4 ? '' : 'rotate(' + (a * 180 / Math.PI).toFixed(2) + 'deg)'; var fd = (t - (st.sim.land[j] + 0.3)) / 0.5; b.style.opacity = fd <= 0 ? '' : Math.max(0, 1 - fd).toFixed(3); }
+    for (var k = 0; k < st.reveal.length; k++) if (t >= st.reveal[k].t && !st.reveal[k].done) { st.reveal[k].done = true; st.reveal[k].li.classList.add('shown'); }
   }
-  function finish(row, lis) { lis.forEach(function (li) { li.style.transform = ''; li.style.willChange = ''; li.style.removeProperty('--dm-d'); }); row.classList.add('built'); }
+  function prepare(row) {
+    var st = ensureStage(row); st.sim = simulate(st.n);
+    st.reveal = [].slice.call(row.children).filter(function (c) { return c.tagName === 'LI'; }).map(function (li) { var m = Math.min(st.n - 1, Math.max(0, Math.ceil((li.offsetLeft - BR.margin) / BR.p))); return { li: li, t: Math.max(0, st.sim.t45[m] - 0.08), done: false }; });
+    return st;
+  }
+  function finish(row) {
+    var st = row.__stage; [].slice.call(row.children).forEach(function (c) { c.classList && c.classList.remove('shown'); });
+    if (st) { st.el.style.opacity = 0; setTimeout(function () { st.el.remove(); row.__stage = null; }, 600); }
+    row.classList.add('built');
+  }
   function play(row) {
-    var lis = [].slice.call(row.children), sim = simulate(lis.length), t0 = performance.now() + 250;
+    var st = prepare(row), t0 = performance.now() + 450;
     (function tick(now) {
       var t = (now - t0) / 1000; if (t < 0) { requestAnimationFrame(tick); return; }
-      paint(row, lis, sim, t); if (t < sim.duration * SLOW) requestAnimationFrame(tick); else finish(row, lis);
+      paint(st, t); if (t < st.sim.dur + 0.5) requestAnimationFrame(tick); else finish(row);
     })(performance.now());
   }
+  var pre = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting && !e.target.__stage && !e.target.__dm) ensureStage(e.target); }); }, { rootMargin: '0px 0px 40% 0px' });
   var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting && !e.target.__dm) { e.target.__dm = 1; io.unobserve(e.target); play(e.target); } }); }, { threshold: 0.6 });
-  rows.forEach(function (r) { io.observe(r); });
-  function skip() { rows.forEach(function (r) { r.__dm = 1; finish(r, [].slice.call(r.children)); }); }
+  rows.forEach(function (r) { pre.observe(r); io.observe(r); });
+  function skip() { rows.forEach(function (r) { r.__dm = 1; if (r.__stage) { r.__stage.el.remove(); r.__stage = null; } [].slice.call(r.children).forEach(function (c) { c.classList && c.classList.remove('shown'); }); r.classList.add('built'); }); }
   try { var mq = window.matchMedia('(max-width: 760px)'); (mq.addEventListener ? mq.addEventListener('change', function (e) { if (e.matches) skip(); }) : mq.addListener(function (e) { if (e.matches) skip(); })); } catch (x) {}
-  window.__dm = { simulate: simulate, seek: function (row, t) { var lis = [].slice.call(row.children), sim = simulate(lis.length); row.__dm = 1; paint(row, lis, sim, t); return sim.duration * SLOW; }, done: function (row) { finish(row, [].slice.call(row.children)); }, rows: rows };
+  window.__dm = { simulate: simulate, rows: rows, BR: BR, seek: function (row, t) { row.__dm = 1; var st = row.__stage && row.__stage.sim ? row.__stage : prepare(row); paint(st, t); return st.sim.dur; }, stage: function (row) { return ensureStage(row); }, done: finish };
 })();
 </script>
 </body>
