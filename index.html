@@ -605,20 +605,27 @@
   @media (prefers-reduced-motion: reduce) { #fx-water { display: none; } }
 
 
-  /* ---------- the two rows build themselves: a run of domino bricks topples along the row and each card drops in as the wave reaches it ---------- */
+  /* ---------- the two rows build themselves: the cards start as thick domino blocks seen from above, tip over in a chain and land as the cards ---------- */
   html.dm .flow-steps:not(.built) { position: relative; }
-  html.dm .flow-steps:not(.built) li { opacity: 0; transform: translateY(-28px) scale(0.96); animation: none; }
-  html.dm .flow-steps:not(.built) li.shown { opacity: 1; transform: none; transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.2, 1.55, 0.4, 1); }
-  html.dm .flow-steps:not(.built) li::after { opacity: 0; }
+  html.dm .flow-steps:not(.built) > li { opacity: 0; animation: none; }
+  html.dm .flow-steps:not(.built) > li.dm-in { opacity: 1; }
+  html.dm .flow-steps:not(.built) > li::after { opacity: 0; }
+  html.dm .flow-steps:not(.built) > li.dm-in::after { opacity: 1; }
   .flow-steps li::after { transition: opacity 0.6s ease; }
-  .dm-stage { position: absolute; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none; z-index: 4; transition: opacity 0.55s ease; }
-  .dm-ground { position: absolute; left: 0; right: 0; bottom: 11px; height: 1px; background: rgba(var(--ink-rgb), 0.22); }
-  .dm-b { position: absolute; bottom: 12px; width: 18px; height: 62px; transform-origin: 100% 100%; border-radius: 4px; will-change: transform;
-    background: linear-gradient(135deg, #cdb9ff 0%, #9370f8 36%, #5b38d8 72%, #3d22a6 100%);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4), inset 0 -5px 7px rgba(24, 8, 76, 0.5), inset 3px 0 4px rgba(255, 255, 255, 0.18), 0 4px 8px rgba(0, 0, 0, 0.3); }
-  .dm-b::before { content: ""; position: absolute; left: 2px; right: 2px; top: 50%; height: 2px; margin-top: -1px; background: rgba(255, 255, 255, 0.75); border-radius: 1px; box-shadow: 0 1px 0 rgba(30, 10, 90, 0.5); }
-  .dm-b i { position: absolute; left: 50%; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0.5px rgba(30, 10, 90, 0.35); }
-  @media print { .dm-stage { display: none !important; } .flow-steps li { opacity: 1 !important; transform: none !important; } .flow-steps li::after { opacity: 1 !important; } }
+  .dm-stage { position: absolute; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none; z-index: 4; transition: opacity 0.45s ease; }
+  .dm-cam { position: absolute; left: 0; right: 0; top: 0; bottom: 0; perspective: 2400px; perspective-origin: 50% 50%; transform-style: preserve-3d; }
+  .dm-box { position: absolute; top: 0; transform-origin: 0 50% 0; transform-style: preserve-3d; will-change: transform; }
+  .dm-f { position: absolute; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .dm-card { background: var(--bg); }
+  .dm-card > li { position: absolute; left: 0; top: 0; width: 100%; height: 100%; margin: 0; box-sizing: border-box; opacity: 1 !important; transform: none !important; animation: none !important; }
+  .dm-card > li::after { display: none !important; }
+  .dm-dim { position: absolute; inset: 0; background: #000; opacity: 0.42; }
+  .dm-p { background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(0, 0, 0, 0.1)), var(--bg); box-shadow: inset 0 0 0 2px rgba(var(--ink-rgb), 0.6); }
+  .dm-pe { background: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), var(--bg); box-shadow: inset 0 0 0 2px rgba(var(--ink-rgb), 0.6); }
+  .dm-dv { position: absolute; background: rgba(var(--ink-rgb), 0.7); }
+  .dm-pip { position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: rgba(var(--ink-rgb), 0.85); }
+  .dm-sh { position: absolute; top: 0; background: rgba(0, 0, 0, 0.34); filter: blur(6px); transform-origin: 0 0; }
+  @media print { .dm-stage { display: none !important; } .flow-steps > li { opacity: 1 !important; transform: none !important; } .flow-steps > li::after { opacity: 1 !important; } }
 
   /* ---------- vector figures ---------- */
   .sketch { margin: 0 0 18px; }
@@ -647,7 +654,9 @@
   .bk-bk { position: absolute; left: 0; top: 0; overflow: hidden; transform-origin: 0 0; will-change: transform; background: var(--paper); z-index: 2; isolation: isolate; }
   .bk-fsh, .bk-bsh { position: absolute; inset: 0; pointer-events: none; }
   .bk-castw { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 19; }
-  .bk-c1, .bk-c2 { position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none; will-change: transform; }
+  .bk-ssh, .bk-fsw { position: absolute; top: 0; overflow: hidden; pointer-events: none; filter: blur(9px); opacity: 0; }
+  .bk-ssh { left: 0; right: 0; bottom: 0; }
+  .bk-sb { position: absolute; left: 0; top: 0; transform-origin: 0 0; background: #000; }
 
   .book { position: relative; margin: 8px 0 4px; }
   .book-stage { position: relative; touch-action: pan-y; }
@@ -1964,16 +1973,20 @@
     return c;
   };
   Book.prototype.buildLeaf = function (frontPg, backPg) {
-    var W = this.pageW, H = this.stageH, SW = this.stageW, hx = this.mode === 'spread' ? W : 0, Wb = SW + 2 * W, Hb = 2 * H + SW + 400, i;
-    var castw = el('div', 'bk-castw', this.stage), c1 = el('div', 'bk-c1', castw), c2 = el('div', 'bk-c2', castw);
+    var W = this.pageW, H = this.stageH, SW = this.stageW, hx = this.mode === 'spread' ? W : 0, Wb = SW + 2 * W, Hb = 2 * H + SW + 400;
+    function nest(parent, cls) {                      // the flap's silhouette in black, blurred: so its shadow follows the page's real edges
+      var wrap = el('div', cls, parent), c = el('div', 'bk-hc', wrap), i = el('div', 'bk-hi', c), b = el('div', 'bk-sb', i);
+      c.style.width = Wb + 'px'; c.style.height = Hb + 'px'; b.style.width = W + 'px'; b.style.height = H + 'px'; return { wrap: wrap, hc: c, hi: i, bk: b };
+    }
+    var castw = el('div', 'bk-castw', this.stage), s1 = nest(castw, 'bk-ssh');
     var leaf = el('div', 'bk-leaf', this.stage);
     var hc = el('div', 'bk-hc', leaf), hi = el('div', 'bk-hi', hc); hc.style.width = Wb + 'px'; hc.style.height = Hb + 'px';           // everything on the spine side of the fold is kept; the rest is clipped away
     var fr = el('div', 'bk-fr', hi); fr.style.cssText = 'left:' + hx + 'px;top:0;width:' + W + 'px;height:' + H + 'px;';                  // the part of the page still lying flat
-    fr.appendChild(this.cloneFor(frontPg, 0, 'right')); var fsh = el('div', 'bk-fsh', fr);
+    fr.appendChild(this.cloneFor(frontPg, 0, 'right')); var s2 = nest(fr, 'bk-fsw'); s2.wrap.style.left = (-hx) + 'px'; s2.wrap.style.width = SW + 'px'; s2.wrap.style.height = H + 'px';
     var bk = el('div', 'bk-bk', hi); bk.style.width = W + 'px'; bk.style.height = H + 'px';                                               // the back of the page, folded over
     var back; if (backPg) back = this.cloneFor(backPg, 0, 'left'); else { back = el('div', 'pg pg-clone'); back.style.cssText = 'left:0;top:0;width:' + W + 'px;height:' + H + 'px;border-radius:0;background:var(--paper);'; }
     bk.appendChild(back); var bsh = el('div', 'bk-bsh', bk);
-    return { el: leaf, castw: castw, c1: c1, c2: c2, hc: hc, hi: hi, fr: fr, fsh: fsh, bk: bk, bsh: bsh, Wb: Wb, Hb: Hb };
+    return { el: leaf, castw: castw, s1: s1, s2: s2, hc: hc, hi: hi, fr: fr, bk: bk, bsh: bsh, Wb: Wb, Hb: Hb };
   };
 
   Book.prototype.plan = function (dir) {
@@ -2013,24 +2026,20 @@
     var q = clamp(this.dir > 0 ? p : 1 - p, 0, 1), uf = W * (1 - q), Fx = hx + uf, Fy = H / 2;                // where the fold is: it sweeps from the outer edge to the spine
     var tilt = ((this.gy == null ? 0.8 : this.gy) - 0.5) * 2 * 11 * Math.pow(Math.sin(Math.PI * q), 0.85);   // a grab near a corner leans the fold, like a real page
     var ph = tilt * D2R, c = Math.cos(ph), sn = Math.sin(ph), c2 = Math.cos(2 * ph), s2 = Math.sin(2 * ph), Wb = L.Wb, Hb = L.Hb;
-    L.hc.style.transform = 'translate(' + f2(Fx) + 'px,' + f2(Fy) + 'px) rotate(' + tilt.toFixed(3) + 'deg) translate(' + (-Wb) + 'px,' + (-Hb / 2) + 'px)';
-    L.hi.style.transform = 'translate(' + Wb + 'px,' + (Hb / 2) + 'px) rotate(' + (-tilt).toFixed(3) + 'deg) translate(' + f2(-Fx) + 'px,' + f2(-Fy) + 'px)';
+    var hcT = 'translate(' + f2(Fx) + 'px,' + f2(Fy) + 'px) rotate(' + tilt.toFixed(3) + 'deg) translate(' + (-Wb) + 'px,' + (-Hb / 2) + 'px)';
+    var hiT = 'translate(' + Wb + 'px,' + (Hb / 2) + 'px) rotate(' + (-tilt).toFixed(3) + 'deg) translate(' + f2(-Fx) + 'px,' + f2(-Fy) + 'px)';
+    L.hc.style.transform = hcT; L.hi.style.transform = hiT; L.s1.hc.style.transform = hcT; L.s1.hi.style.transform = hiT; L.s2.hc.style.transform = hcT; L.s2.hi.style.transform = hiT;
     // the back of the page: the mirror of the front, reflected across the fold (a rotation by twice the fold angle)
     var r0 = 1 - 2 * c * c, r1 = -2 * c * sn, r3 = 1 - 2 * sn * sn, tx = hx + W - Fx, ty = -Fy, Tx = Fx + r0 * tx + r1 * ty, Ty = Fy + r1 * tx + r3 * ty;
-    L.bk.style.transform = 'matrix(' + [c2, s2, -s2, c2, Tx, Ty].map(function (v) { return v.toFixed(5); }).join(',') + ')';
-    var de = c * (W - uf), band = 0.13 * W, aF = 90 + tilt, lenF = Math.abs(W * Math.sin(aF * D2R)) + Math.abs(H * Math.cos(aF * D2R)), scF = c * (W / 2 - uf);
-    // light on the page lying flat: the flap throws a soft shadow just beyond its far edge
-    L.fsh.style.background = gradient(aF, lenF, scF, [[-de - band, 'rgba(0,0,0,0)'], [-de - band * 0.4, 'rgba(0,0,0,0.10)'], [-de, 'rgba(0,0,0,0.30)'], [-de + 0.5, 'rgba(0,0,0,0.30)'], [4000, 'rgba(0,0,0,0.30)']]);
+    function mat(dx, dy) { return 'matrix(' + [c2, s2, -s2, c2, Tx + dx, Ty + dy].map(function (v) { return v.toFixed(5); }).join(',') + ')'; }
+    L.bk.style.transform = mat(0, 0);
+    // the shadow is the flap's own outline, blurred, shifted a little (the page lifts highest half way through)
+    var lift = Math.sin(Math.PI * q), sm = mat(-5 * lift, 8 * lift), so = (0.42 * clamp(q * 6, 0, 1) * clamp((1 - q) * 6, 0, 1)).toFixed(3);
+    L.s1.bk.style.transform = sm; L.s2.bk.style.transform = sm; L.s1.wrap.style.opacity = so; L.s2.wrap.style.opacity = so;
     // light on the flap: a bright rolled edge at the fold, then paper, then a little shade towards its far edge
-    var aB = 90 - tilt, lenB = Math.abs(W * Math.sin(aB * D2R)) + Math.abs(H * Math.cos(aB * D2R));
+    var de = c * (W - uf), aB = 90 - tilt, lenB = Math.abs(W * Math.sin(aB * D2R)) + Math.abs(H * Math.cos(aB * D2R));
     var scB = c * (c2 * W / 2 - s2 * H / 2 + Tx - Fx) + sn * (s2 * W / 2 + c2 * H / 2 + Ty - Fy);
     L.bsh.style.background = gradient(aB, lenB, scB, [[-4000, 'rgba(0,0,0,0.30)'], [-de, 'rgba(0,0,0,0.30)'], [-de * 0.5, 'rgba(0,0,0,0.10)'], [-34, 'rgba(0,0,0,0.04)'], [-12, 'rgba(255,255,255,0.22)'], [-2, 'rgba(0,0,0,0.20)'], [0, 'rgba(0,0,0,0.32)'], [0.5, 'rgba(0,0,0,0)']]);
-    // shadows on whatever lies beneath: beyond the flap's far edge, and on the page being uncovered
-    var fade = clamp(q * 7, 0, 1) * clamp((1 - q) * 7, 0, 1), Hbig = H + SW, b1 = 0.15 * W, b2 = 0.12 * W;
-    L.c1.style.width = b1 + 'px'; L.c1.style.height = Hbig + 'px'; L.c1.style.background = 'linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,0.34))';
-    L.c1.style.transform = 'translate(' + f2(Fx - c * de) + 'px,' + f2(Fy - sn * de) + 'px) rotate(' + tilt.toFixed(3) + 'deg) translate(' + (-b1) + 'px,' + (-Hbig / 2) + 'px)'; L.c1.style.opacity = fade.toFixed(3);
-    L.c2.style.width = b2 + 'px'; L.c2.style.height = Hbig + 'px'; L.c2.style.background = 'linear-gradient(90deg,rgba(0,0,0,0.30),rgba(0,0,0,0.10) 45%,rgba(0,0,0,0))';
-    L.c2.style.transform = 'translate(' + f2(Fx) + 'px,' + f2(Fy) + 'px) rotate(' + tilt.toFixed(3) + 'deg) translate(0px,' + (-Hbig / 2) + 'px)'; L.c2.style.opacity = fade.toFixed(3);
     if (this.mode === 'single' && this.dir > 0 && q > 0.55) L.el.style.opacity = Math.max(0, (0.97 - q) / 0.42).toFixed(3); else L.el.style.opacity = 1;
   };
   // finish: commit the turn (done) or put it back (not done)
@@ -2591,70 +2600,83 @@
 })();
 </script>
 <script>
-/* ---------------- dominoes: a run of bricks topples along each row of steps, and each card drops in as the wave reaches it ---------------- */
+/* ---------------- dominoes: each row of cards starts as thick domino blocks seen from above, tips over in a chain, and lands as the cards ---------------- */
 (function () {
   var root = document.documentElement; if (!root.classList.contains('dm')) return;
   if (window.matchMedia('(max-width: 760px)').matches) { root.classList.remove('dm'); return; }          // a phone: the early check can run before the viewport is known, so confirm it here
-  var rows = [].slice.call(document.querySelectorAll('.flow-steps'));
-  var BR = { w: 18, h: 62, p: 50, g: 5200, c: 0.65, e: 0.16, kick: 6.4, flick: 5.8, margin: 14 }, PI2 = Math.PI / 2, DT = 1 / 480;
-  // One brick's fall is integrated under gravity (rod tipping about its front corner, with a kick from the impact and a small bounce).
-  // Every brick replays that fall at the moment the one before it touches it. A back-to-front limit means no brick can be inside the one it leans on.
-  function simulate(n) {
-    var w = BR.w, h = BR.h, p = BR.p, M = 1000, j, k;
-    function psi(t) { return t - Math.asin(Math.max(-1, Math.min(1, (w - p * Math.cos(t)) / h))); }
-    function fall(w0) { var th = new Float32Array(M), cur = 0, om = w0, kk; for (kk = 0; kk < M; kk++) { var al = 3 * BR.g * (h * Math.sin(cur) - w * Math.cos(cur)) / (2 * (h * h + w * w)); om += (al - BR.c * om) * DT; cur += om * DT; if (cur < 0) { cur = 0; if (om < 0) om = 0; } if (cur > PI2) { cur = PI2; om = om > 1.2 ? -BR.e * om : 0; } th[kk] = cur; } return th; }
+  var rows = [].slice.call(document.querySelectorAll('.flow-steps')), PI2 = Math.PI / 2, DT = 1 / 480, THICK = 44, LAND = 82 * Math.PI / 180;
+  // One block's fall is integrated under gravity (a rod tipping about its bottom edge, with a kick from the impact and a small bounce).
+  // Every block replays that fall at the moment the one before it touches it, and a back-to-front limit stops any block ending up inside the one it leans on.
+  function simulate(n, w, h, p) {
+    var M = 1000, j, k, g = 12.3 * h, c = 0.25, wc = 20;          // wc: how thick a block counts as when it presses on its neighbour, so a block comes to rest almost flat rather than propped up
+    function psi(t) { return t - Math.asin(Math.max(-1, Math.min(1, (wc - p * Math.cos(t)) / h))); }
+    function fall(w0) { var th = new Float32Array(M), cur = 0, om = w0, kk; for (kk = 0; kk < M; kk++) { var al = 3 * g * (h * Math.sin(cur) - w * Math.cos(cur)) / (2 * (h * h + w * w)); om += (al - c * om) * DT; cur += om * DT; if (cur < 0) { cur = 0; if (om < 0) om = 0; } if (cur > PI2) { cur = PI2; om = 0; } th[kk] = cur; } return th; }
     function at(arr, tau) { if (tau <= 0) return 0; var x = tau / DT, i = Math.floor(x); return i >= M - 1 ? arr[M - 1] : arr[i] + (arr[i + 1] - arr[i]) * (x - i); }
     function reach(arr, a) { for (var kk = 0; kk < M; kk++) if (arr[kk] >= a) return kk * DT; return 1; }
-    var F0 = fall(BR.flick), F = fall(BR.kick), contact = psi(0), d0 = reach(F0, contact), d1 = reach(F, contact), tj = [0], A = [], T;
+    var F0 = fall(2.2), F = fall(2.45), contact = psi(0), d0 = reach(F0, contact), d1 = reach(F, contact), tj = [0], A = [], T;
     for (j = 1; j < n; j++) tj[j] = tj[j - 1] + (j === 1 ? d0 : d1);
     T = Math.round((tj[n - 1] + 1.4) / DT); for (j = 0; j < n; j++) A.push(new Float32Array(T));
     for (k = 0; k < T; k++) for (j = 0; j < n; j++) A[j][k] = Math.min(PI2, at(j === 0 ? F0 : F, k * DT - tj[j]));
-    for (j = n - 2; j >= 0; j--) for (k = 0; k < T; k++) { var lim = psi(A[j + 1][k]); if (A[j][k] > lim) A[j][k] = lim; }
+    // a block cannot pass through the one it leans on; but once that one has gone down and the corner is no longer on its face, the block simply drops to the table (smoothly, not with a snap)
+    for (j = n - 2; j >= 0; j--) { var prev = 0; for (k = 0; k < T; k++) { var tn = A[j + 1][k], li = psi(tn), ca = h * Math.sin(li) - p, cb = h * Math.cos(li), onFace = ca * Math.sin(tn) + cb * Math.cos(tn) >= 0, v = Math.min(A[j][k], onFace ? li : PI2); if (v > prev + 8 * DT) v = prev + 8 * DT; A[j][k] = v; prev = v; } }
     var end = 0; for (k = T - 1; k > 0 && !end; k--) for (j = 0; j < n; j++) if (Math.abs(A[j][k] - A[j][k - 1]) > 2e-5) { end = k; break; }
-    var len = Math.min(T, end + 24), t45 = [], land = []; for (j = 0; j < n; j++) { t45[j] = 0; land[j] = 0; for (k = 0; k < len; k++) if (A[j][k] > 0.785) { t45[j] = k * DT; break; } for (k = 0; k < len; k++) if (A[j][k] > 1.0) { land[j] = k * DT; break; } }
-    return { A: A, len: len, dur: len * DT, t45: t45, land: land };
+    var len = Math.min(T, end + 24); return { A: A, len: len, dur: len * DT };
   }
-  var PIPS = [[16], [9, 23], [6, 16, 26], [6, 12, 20, 26]];
+  function pips(face, w, h, horizontalDivide) {                         // a domino face: a divider across the middle and a few pips on each half
+    var SETS = [[[0.5, 0.5]], [[0.3, 0.5], [0.7, 0.5]], [[0.25, 0.3], [0.75, 0.3], [0.5, 0.75]]], dv = document.createElement('div'), half, q, i;
+    dv.className = 'dm-dv'; if (horizontalDivide) dv.style.cssText = 'left:4px;right:4px;top:' + (h / 2 - 1) + 'px;height:2px;'; else dv.style.cssText = 'top:4px;bottom:4px;left:' + (w / 2 - 1) + 'px;width:2px;'; face.appendChild(dv);
+    for (half = 0; half < 2; half++) { var set = SETS[(half * 2 + (w > h ? 1 : 0)) % 3]; set.forEach(function (pt) { var d = document.createElement('div'); d.className = 'dm-pip'; if (horizontalDivide) { d.style.left = (pt[0] * w) + 'px'; d.style.top = ((half * 0.5 + pt[1] * 0.5) * h) + 'px'; } else { d.style.left = ((half * 0.5 + pt[1] * 0.5) * w) + 'px'; d.style.top = (pt[0] * h) + 'px'; } face.appendChild(d); }); }
+  }
+  function face(parent, cls, css) { var f = document.createElement('div'); f.className = 'dm-f ' + cls; f.style.cssText = css; parent.appendChild(f); return f; }
   function ensureStage(row) {
     var W = row.clientWidth, st = row.__stage; if (st && Math.abs(st.w - W) < 3) return st;
     if (st) st.el.remove();
-    var n = Math.max(6, Math.floor((W - 2 * BR.margin - BR.w - BR.h) / BR.p) + 1), el = document.createElement('div'), bricks = [], i, q;
-    el.className = 'dm-stage'; el.innerHTML = '<div class="dm-ground"></div>';
-    for (i = 0; i < n; i++) {
-      var b = document.createElement('div'); b.className = 'dm-b'; b.style.left = (BR.margin + i * BR.p) + 'px';
-      for (q = 0; q < 2; q++) { var set = PIPS[(i * 3 + q * 5 + 1) % PIPS.length]; set.forEach(function (y) { var d = document.createElement('i'); d.style.top = (y + (q ? 32 : 0) - 4) + 'px'; b.appendChild(d); }); }
-      el.appendChild(b); bricks.push(b);
-    }
-    row.appendChild(el); return (row.__stage = { el: el, bricks: bricks, w: W, n: n, sim: null, reveal: null });
+    var lis = [].slice.call(row.children).filter(function (c) { return c.tagName === 'LI'; }), el = document.createElement('div'), T = THICK, boxes = [], shadows = [], dims = [], walls = [];
+    el.className = 'dm-stage'; el.style.transform = 'scale(' + ((2400 - T) / 2400).toFixed(5) + ')'; var cam = document.createElement('div'); cam.className = 'dm-cam'; el.appendChild(cam); var cw = lis[0].offsetWidth, ch = lis[0].offsetHeight;
+    lis.forEach(function (li) {
+      var x = li.offsetLeft, w = li.offsetWidth, h = li.offsetHeight, sh = document.createElement('div'); sh.className = 'dm-sh'; sh.style.cssText = 'left:' + x + 'px;width:' + w + 'px;height:' + h + 'px;'; cam.appendChild(sh); shadows.push(sh);
+      var box = document.createElement('div'); box.className = 'dm-box'; box.style.cssText = 'left:' + x + 'px;width:' + w + 'px;height:' + h + 'px;transform:rotateY(-90deg);'; cam.appendChild(box); boxes.push(box);
+      var top = face(box, 'dm-card', 'left:0;top:0;width:' + w + 'px;height:' + h + 'px;transform:translateZ(' + T + 'px);'); top.appendChild(li.cloneNode(true)); var dim = document.createElement('div'); dim.className = 'dm-dim'; top.appendChild(dim); dims.push(dim);
+      var bot = face(box, 'dm-p', 'left:0;top:0;width:' + w + 'px;height:' + h + 'px;transform:rotateY(180deg);'); pips(bot, w, h, false);
+      var rt = face(box, 'dm-p', 'left:' + (w - T / 2) + 'px;top:0;width:' + T + 'px;height:' + h + 'px;transform:translateZ(' + (T / 2) + 'px) rotateY(90deg);'); pips(rt, T, h, true);
+      walls.push([rt, face(box, 'dm-pe', 'left:' + (-T / 2) + 'px;top:0;width:' + T + 'px;height:' + h + 'px;transform:translateZ(' + (T / 2) + 'px) rotateY(-90deg);'),
+        face(box, 'dm-pe', 'left:0;top:' + (-T / 2) + 'px;width:' + w + 'px;height:' + T + 'px;transform:translateZ(' + (T / 2) + 'px) rotateX(90deg);'),
+        face(box, 'dm-pe', 'left:0;top:' + (h - T / 2) + 'px;width:' + w + 'px;height:' + T + 'px;transform:translateZ(' + (T / 2) + 'px) rotateX(-90deg);')]);
+    });
+    row.appendChild(el); return (row.__stage = { el: el, boxes: boxes, shadows: shadows, dims: dims, walls: walls, lis: lis, w: W, n: lis.length, cw: cw, ch: ch, sim: null, landed: [], left: lis.length });
   }
-  function paint(st, t) {
-    var f = Math.max(0, t / DT), i = Math.min(st.sim.len - 1, Math.floor(f)), i2 = Math.min(st.sim.len - 1, i + 1), u = f - i, A = st.sim.A;
-    for (var j = 0; j < st.n; j++) { var a = A[j][i] + (A[j][i2] - A[j][i]) * u; var b = st.bricks[j]; b.style.transform = a < 1e-4 ? '' : 'rotate(' + (a * 180 / Math.PI).toFixed(2) + 'deg)'; var fd = (t - (st.sim.land[j] + 0.3)) / 0.5; b.style.opacity = fd <= 0 ? '' : Math.max(0, 1 - fd).toFixed(3); }
-    for (var k = 0; k < st.reveal.length; k++) if (t >= st.reveal[k].t && !st.reveal[k].done) { st.reveal[k].done = true; st.reveal[k].li.classList.add('shown'); }
+  function paint(st, t, row) {
+    var sim = st.sim, f = Math.max(0, t / DT), i = Math.min(sim.len - 1, Math.floor(f)), i2 = Math.min(sim.len - 1, i + 1), u = f - i, T = THICK;
+    for (var j = 0; j < st.n; j++) {
+      if (st.landed[j]) continue;
+      var a = sim.A[j][i] + (sim.A[j][i2] - sim.A[j][i]) * u, lam = Math.min(1, Math.max(0, (a * 180 / Math.PI - 55) / 27)); lam = lam * lam * (3 - 2 * lam);
+      st.boxes[j].style.transform = 'rotateY(' + (a * 180 / Math.PI - 90).toFixed(2) + 'deg)'; st.dims[j].style.opacity = (0.42 * Math.pow(Math.cos(a), 2)).toFixed(3);
+      var w = st.lis[j].offsetWidth; st.shadows[j].style.opacity = (1 - Math.pow(Math.sin(a), 4)).toFixed(3); st.shadows[j].style.transform = 'translateX(' + (-T * Math.cos(a)).toFixed(1) + 'px) scaleX(' + ((w * Math.sin(a) + T * Math.cos(a)) / w).toFixed(4) + ')';
+      for (var q = 0; q < 4; q++) st.walls[j][q].style.opacity = (1 - lam).toFixed(3);
+      if (a >= LAND) { st.landed[j] = true; st.boxes[j].style.visibility = 'hidden'; st.shadows[j].style.visibility = 'hidden'; st.lis[j].classList.add('dm-in'); st.left--; }
+    }
   }
   function prepare(row) {
-    var st = ensureStage(row); st.sim = simulate(st.n);
-    st.reveal = [].slice.call(row.children).filter(function (c) { return c.tagName === 'LI'; }).map(function (li) { var m = Math.min(st.n - 1, Math.max(0, Math.ceil((li.offsetLeft - BR.margin) / BR.p))); return { li: li, t: Math.max(0, st.sim.t45[m] - 0.08), done: false }; });
-    return st;
+    var st = ensureStage(row), n = st.n, X0 = st.lis[0].offsetLeft, p = n > 1 ? (st.lis[n - 1].offsetLeft - X0) / (n - 1) : st.cw;
+    st.sim = simulate(n, THICK, st.cw, p); return st;
   }
   function finish(row) {
-    var st = row.__stage; [].slice.call(row.children).forEach(function (c) { c.classList && c.classList.remove('shown'); });
-    if (st) { st.el.style.opacity = 0; setTimeout(function () { st.el.remove(); row.__stage = null; }, 600); }
-    row.classList.add('built');
+    var st = row.__stage; setTimeout(function () { if (st) { st.el.remove(); row.__stage = null; } row.classList.add('built'); }, 700);       // after the last chevron has faded in
   }
   function play(row) {
     var st = prepare(row), t0 = performance.now() + 450;
     (function tick(now) {
       var t = (now - t0) / 1000; if (t < 0) { requestAnimationFrame(tick); return; }
-      paint(st, t); if (t < st.sim.dur + 0.5) requestAnimationFrame(tick); else finish(row);
+      paint(st, t, row); if (st.left > 0) requestAnimationFrame(tick); else finish(row);
     })(performance.now());
   }
-  var pre = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting && !e.target.__stage && !e.target.__dm) ensureStage(e.target); }); }, { rootMargin: '0px 0px 40% 0px' });
+  var pre = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting && !e.target.__stage && !e.target.__dm) { var st = ensureStage(e.target); paintStanding(st); } }); }, { rootMargin: '0px 0px 40% 0px' });
+  function paintStanding(st) { for (var j = 0; j < st.n; j++) { st.dims[j].style.opacity = 0.42; st.shadows[j].style.transform = 'translateX(' + (-THICK) + 'px) scaleX(' + (THICK / st.lis[j].offsetWidth).toFixed(4) + ')'; } }
   var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting && !e.target.__dm) { e.target.__dm = 1; io.unobserve(e.target); play(e.target); } }); }, { threshold: 0.6 });
   rows.forEach(function (r) { pre.observe(r); io.observe(r); });
-  function skip() { rows.forEach(function (r) { r.__dm = 1; if (r.__stage) { r.__stage.el.remove(); r.__stage = null; } [].slice.call(r.children).forEach(function (c) { c.classList && c.classList.remove('shown'); }); r.classList.add('built'); }); }
+  function skip() { rows.forEach(function (r) { r.__dm = 1; if (r.__stage) { r.__stage.el.remove(); r.__stage = null; } r.classList.add('built'); }); }
   try { var mq = window.matchMedia('(max-width: 760px)'); (mq.addEventListener ? mq.addEventListener('change', function (e) { if (e.matches) skip(); }) : mq.addListener(function (e) { if (e.matches) skip(); })); } catch (x) {}
-  window.__dm = { simulate: simulate, rows: rows, BR: BR, seek: function (row, t) { row.__dm = 1; var st = row.__stage && row.__stage.sim ? row.__stage : prepare(row); paint(st, t); return st.sim.dur; }, stage: function (row) { return ensureStage(row); }, done: finish };
+  window.__dm = { simulate: simulate, rows: rows, seek: function (row, t) { row.__dm = 1; var st = row.__stage && row.__stage.sim ? row.__stage : prepare(row); paint(st, t, row); return st.sim.dur; }, stage: function (row) { return ensureStage(row); }, done: finish };
 })();
 </script>
 </body>
